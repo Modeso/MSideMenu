@@ -1,0 +1,16 @@
+PODS:
+  - MSideMenu (0.1.0)
+
+DEPENDENCIES:
+  - MSideMenu (from `../`)
+
+EXTERNAL SOURCES:
+  MSideMenu:
+    :path: ../
+
+SPEC CHECKSUMS:
+  MSideMenu: 65c2ed01a3b87d84947999037838f63428992203
+
+PODFILE CHECKSUM: 6079474bef5c49d3db91b28211fcae8cae5346a2
+
+COCOAPODS: 1.1.1

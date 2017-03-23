@@ -1,0 +1,22 @@
+{
+  "name": "MSideMenu",
+  "version": "0.1.0",
+  "summary": "A short description of MSideMenu.",
+  "description": "TODO: Add long description of the pod here.",
+  "homepage": "https://github.com/esraaapady/MSideMenu",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "esraaapady": "esraa.apady@modeso.ch"
+  },
+  "source": {
+    "git": "https://github.com/esraaapady/MSideMenu.git",
+    "tag": "0.1.0"
+  },
+  "platforms": {
+    "ios": "8.0"
+  },
+  "source_files": "MSideMenu/Classes/**/*"
+}

@@ -1,0 +1,6 @@
+framework module MSideMenu {
+  umbrella header "MSideMenu-umbrella.h"
+
+  export *
+  module * { export * }
+}
