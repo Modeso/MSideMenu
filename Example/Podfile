@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'MSideMenu_Example' do
+  pod 'MSideMenu', :path => '../'
+
+  target 'MSideMenu_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
