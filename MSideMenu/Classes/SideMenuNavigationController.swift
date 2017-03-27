@@ -13,6 +13,7 @@ open class SideMenuNavigationController: UINavigationController {
     fileprivate let transitionDelegate: SideMenuTransitionsManager = SideMenuTransitionsManager()
     fileprivate var tapGesture: UITapGestureRecognizer?
 
+
     override open func viewDidLoad() {
         super.viewDidLoad()
         self.delegate = self

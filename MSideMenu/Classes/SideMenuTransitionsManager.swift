@@ -37,6 +37,8 @@ fileprivate class SideMenuPresentationAnimator: NSObject, UIViewControllerAnimat
         
         toViewController.view.alpha = 0.0
         containerView.addSubview(toViewController.view)
+        
+        let bounds = UIScreen.main.bounds
         // get snapshot to do the animation..
         let snapshot = fromViewController.view.snapshotView(afterScreenUpdates: true)
         snapshot?.frame = fromViewController.view.frame
@@ -49,9 +51,10 @@ fileprivate class SideMenuPresentationAnimator: NSObject, UIViewControllerAnimat
             toViewController.view.alpha = 1
             fromViewController.view.alpha = SideMenuManager.contentViewControllerOpacity
             snapshot?.alpha = fromViewController.view.alpha
+            
             fromViewController.view.transform  = CGAffineTransform(scaleX: SideMenuManager.contentViewControllerScale,
-                                                     y: SideMenuManager.contentViewControllerScale).translatedBy(x: fromViewController.view.frame.size.width * SideMenuManager.xTranslation,
-                                                                                                                 y: fromViewController.view.frame.size.height * SideMenuManager.yTranslation)
+                                                     y: SideMenuManager.contentViewControllerScale).translatedBy(x: bounds.size.width * SideMenuManager.xTranslation,
+                                                                                                                 y: bounds.size.height * SideMenuManager.yTranslation)
             
             snapshot?.transform  = fromViewController.view.transform
 

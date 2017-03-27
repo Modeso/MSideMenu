@@ -22,11 +22,11 @@ open class SideMenuManager {
     /// The scale of the content view controller
     open static var contentViewControllerScale: CGFloat = 0.5
 
-    /// The amount of translation in X direction.
-    open static var xTranslation: CGFloat = 0.75
+    /// The amount of translation in X direction., 1.0 it will be centered
+    open static var xTranslation: CGFloat = 0.8
     
     /// The amount of translation in Y direction.
-    open static var yTranslation: CGFloat = 0.3
+    open static var yTranslation: CGFloat = 0.0
 
     /// The amount of opacity of the content view controller.
     open static var contentViewControllerOpacity: CGFloat = 0.8
