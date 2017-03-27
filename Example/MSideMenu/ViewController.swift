@@ -9,7 +9,7 @@
 import UIKit
 import MSideMenu
 
-class ViewController: RootViewViewController {
+class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -8,12 +8,12 @@
 
 import UIKit
 
-class SideMenuNavigationController: UINavigationController {
+open class SideMenuNavigationController: UINavigationController {
 
     fileprivate let transitionDelegate: SideMenuTransitionsManager = SideMenuTransitionsManager()
     fileprivate var tapGesture: UITapGestureRecognizer?
 
-    override func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
         self.delegate = self
         self.tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapSideMenu))
@@ -23,18 +23,24 @@ class SideMenuNavigationController: UINavigationController {
         }
         self.view.addGestureRecognizer(tapGesture)
     }
+    open func closeSideMenu() {
+        if let presented = self.presentedViewController {
+            self.tapGesture?.isEnabled = false
+            presented.dismiss(animated: true, completion: nil)
+            
+        }
+    }
 }
 
 /// Delegate
 extension SideMenuNavigationController: UINavigationControllerDelegate {
     
-    func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
+    public func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
         /// 
         viewController.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Menu", style: .plain, target: self, action: #selector(didTapSideMenu))
     }
 }
 /// action
-
 extension SideMenuNavigationController {
     
     func didTapSideMenu() {
@@ -53,5 +59,5 @@ extension SideMenuNavigationController {
             self.present(sideMenuVC, animated: true, completion: nil)
         }
     }
-    
+ 
 }

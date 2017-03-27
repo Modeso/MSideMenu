@@ -30,9 +30,6 @@ open class SideMenuManager {
 
     /// The amount of opacity of the content view controller.
     open static var contentViewControllerOpacity: CGFloat = 0.8
-
-    /// Menu Content View Controller
-    open static var contentViewController: UIViewController?
     
     /// Side menu view controller 
     open static var sideMenuViewController: UIViewController?

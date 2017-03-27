@@ -11,7 +11,6 @@
 		17A1294B9CB1D0570A793843CA3B7261 /* MSideMenu-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 991D87043BD4D78C5036046F294C4F2D /* MSideMenu-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1B9A3D1B567C911C9E1F7436EEE258E0 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBB3DE36805AF21409EC968A9691732F /* Foundation.framework */; };
 		2B522647AE68A6C36B9A330BAE3AB896 /* Pods-MSideMenu_Tests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 60737EC3DFDFBF968C947A7E3E2D22C4 /* Pods-MSideMenu_Tests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		360B521B665F791F3C39E0A1D5C3B894 /* RootViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00A7597B8A3FD878164F7456CE9E1F1 /* RootViewViewController.swift */; };
 		3DA4BFE16708207B83A9776FB62D6134 /* MSideMenu-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B0235172508546D35D5E5ABAE9C631A /* MSideMenu-dummy.m */; };
 		4A08DD72A18485F32DB1CB233A7BEAFA /* Pods-MSideMenu_Example-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D8548AFBBC663E2EF416E81A7633D90 /* Pods-MSideMenu_Example-dummy.m */; };
 		5ED2BB5E88D8D7652473A6E05E72CF43 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBB3DE36805AF21409EC968A9691732F /* Foundation.framework */; };
@@ -64,7 +63,6 @@
 		D775D347F42FF8E6D7ACBEE86355DED6 /* Pods-MSideMenu_Example-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-MSideMenu_Example-acknowledgements.markdown"; sourceTree = "<group>"; };
 		E0721E83F0DBD475DDCDB067441E3627 /* Pods-MSideMenu_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-MSideMenu_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		E077807CE3001EBC8F0BA0068693D309 /* Pods-MSideMenu_Tests-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-MSideMenu_Tests-frameworks.sh"; sourceTree = "<group>"; };
-		F00A7597B8A3FD878164F7456CE9E1F1 /* RootViewViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = RootViewViewController.swift; sourceTree = "<group>"; };
 		F05ACBA8686394C9582B596AA33434FA /* MSideMenu-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "MSideMenu-prefix.pch"; sourceTree = "<group>"; };
 		F6054A817DF3B66BCC5444F31EE68208 /* MSideMenu.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MSideMenu.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F84E6FDA840B728EB127F8AD2AC3F37B /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -170,7 +168,6 @@
 		BA871388B37813C0E7880E1DC121ACB8 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				F00A7597B8A3FD878164F7456CE9E1F1 /* RootViewViewController.swift */,
 				24D698FF7D148E18DF555A1B928F0BAF /* SideMenuManager.swift */,
 				7B17ECF7B28ACC874CB4F818BB55B2CD /* SideMenuNavigationController.swift */,
 				3E685CFA089F22BFD346D018F4629BE7 /* SideMenuTransitionsManager.swift */,
@@ -355,7 +352,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				3DA4BFE16708207B83A9776FB62D6134 /* MSideMenu-dummy.m in Sources */,
-				360B521B665F791F3C39E0A1D5C3B894 /* RootViewViewController.swift in Sources */,
 				DF0423185DB0C4DB91018E9BD5218A17 /* SideMenuManager.swift in Sources */,
 				BF791FAEEBF3199631A22B0F43388A9E /* SideMenuNavigationController.swift in Sources */,
 				B85F6B478606AB4BF5985F926032364D /* SideMenuTransitionsManager.swift in Sources */,
