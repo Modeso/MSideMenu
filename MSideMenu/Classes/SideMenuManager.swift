@@ -28,6 +28,9 @@ open class SideMenuManager {
     /// The amount of translation in Y direction.
     open static var yTranslation: CGFloat = 0.3
 
+    /// The amount of opacity of the content view controller.
+    open static var contentViewControllerOpacity: CGFloat = 0.8
+
     /// Menu Content View Controller
     open static var contentViewController: UIViewController?
     

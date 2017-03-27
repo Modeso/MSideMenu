@@ -33,25 +33,35 @@ fileprivate class SideMenuPresentationAnimator: NSObject, UIViewControllerAnimat
         }
         
         let containerView = transitionContext.containerView
-
         let animationDuration = self .transitionDuration(using: transitionContext)
         
         toViewController.view.alpha = 0.0
-        fromViewController.view.alpha = 1.0
         containerView.addSubview(toViewController.view)
-        
+        // get snapshot to do the animation..
+        let snapshot = fromViewController.view.snapshotView(afterScreenUpdates: true)
+        snapshot?.frame = fromViewController.view.frame
+        if let snapshot = snapshot {
+            containerView.addSubview(snapshot)
+        }
+
         UIView.animate(withDuration: animationDuration, animations: {
-            
+    
             toViewController.view.alpha = 1
-            fromViewController.view.alpha = 0.7
-            fromViewController.view.transform  = CGAffineTransform(scaleX: SideMenuManager.contentViewControllerScale, y: SideMenuManager.contentViewControllerScale).translatedBy(x: fromViewController.view.frame.size.width * SideMenuManager.xTranslation, y: fromViewController.view.frame.size.height * SideMenuManager.yTranslation)
+            fromViewController.view.alpha = SideMenuManager.contentViewControllerOpacity
+            snapshot?.alpha = fromViewController.view.alpha
+            fromViewController.view.transform  = CGAffineTransform(scaleX: SideMenuManager.contentViewControllerScale,
+                                                     y: SideMenuManager.contentViewControllerScale).translatedBy(x: fromViewController.view.frame.size.width * SideMenuManager.xTranslation,
+                                                                                                                 y: fromViewController.view.frame.size.height * SideMenuManager.yTranslation)
             
+            snapshot?.transform  = fromViewController.view.transform
+
         }, completion: { (finished: Bool) -> Void in
             
             transitionContext.completeTransition(finished)
             if finished {
-                fromViewController.view.alpha = 0.7
+                // add the view controller but remove the snapshot
                 toViewController.view.addSubview(fromViewController.view)
+                snapshot?.removeFromSuperview()
             }
         })
         
@@ -79,7 +89,7 @@ fileprivate class SideMenuDismissalAnimator: NSObject, UIViewControllerAnimatedT
         }, completion: { (finished: Bool) -> Void in
             transitionContext.completeTransition(finished)
         })
-        
+
     }
-    
+
 }

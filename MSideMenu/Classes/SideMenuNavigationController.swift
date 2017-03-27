@@ -11,12 +11,20 @@ import UIKit
 class SideMenuNavigationController: UINavigationController {
 
     fileprivate let transitionDelegate: SideMenuTransitionsManager = SideMenuTransitionsManager()
+    fileprivate var tapGesture: UITapGestureRecognizer?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.delegate = self
+        self.tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapSideMenu))
+        self.tapGesture?.numberOfTapsRequired = 1
+        guard let tapGesture = self.tapGesture else {
+            return
+        }
+        self.view.addGestureRecognizer(tapGesture)
     }
 }
+
 /// Delegate
 extension SideMenuNavigationController: UINavigationControllerDelegate {
     
@@ -32,10 +40,18 @@ extension SideMenuNavigationController {
     func didTapSideMenu() {
         // present the left side menu...
         if let presented = self.presentedViewController {
+            self.tapGesture?.isEnabled = false
             presented.dismiss(animated: true, completion: nil)
+
         }else {
+            self.tapGesture?.isEnabled = true
             SideMenuManager.sideMenuViewController?.transitioningDelegate = transitionDelegate
-            self.present(SideMenuManager.sideMenuViewController!, animated: true, completion: nil)
+            // add gesture for the visible view controller
+            guard let sideMenuVC = SideMenuManager.sideMenuViewController else {
+                return
+            }
+            self.present(sideMenuVC, animated: true, completion: nil)
         }
     }
+    
 }
