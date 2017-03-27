@@ -1,9 +1,9 @@
 {
   "name": "MSideMenu",
   "version": "0.1.0",
-  "summary": "A short description of MSideMenu.",
-  "description": "TODO: Add long description of the pod here.",
-  "homepage": "https://github.com/esraaapady/MSideMenu",
+  "summary": "≈.",
+  "description": "Custom side menu for the navigation, created by Modeso.",
+  "homepage": "https://github.com/Modeso/MSideMenu",
   "license": {
     "type": "MIT",
     "file": "LICENSE"
@@ -12,7 +12,7 @@
     "esraaapady": "esraa.apady@modeso.ch"
   },
   "source": {
-    "git": "https://github.com/esraaapady/MSideMenu.git",
+    "git": "https://github.com/Modeso/MSideMenu.git",
     "tag": "0.1.0"
   },
   "platforms": {

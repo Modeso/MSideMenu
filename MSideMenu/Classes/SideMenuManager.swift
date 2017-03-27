@@ -26,7 +26,12 @@ open class SideMenuManager {
     open static var xTranslation: CGFloat = 0.75
     
     /// The amount of translation in Y direction.
-    open static var yTranslation: CGFloat = 0.25
+    open static var yTranslation: CGFloat = 0.3
 
+    /// Menu Content View Controller
+    open static var contentViewController: UIViewController?
+    
+    /// Side menu view controller 
+    open static var sideMenuViewController: UIViewController?
 
 }
