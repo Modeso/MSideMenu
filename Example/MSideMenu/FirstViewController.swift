@@ -14,7 +14,10 @@ class FirstViewController: UIViewController {
     override func awakeFromNib() {
         super.awakeFromNib()
         // configure the side menu
-        (self.navigationController as? SideMenuNavigationController)?.sideMenuViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "leftSideViewController")
+        guard let sideMenuNavController = self.navigationController as? SideMenuNavigationController else {
+            return
+        }
+        sideMenuNavController.sideMenuViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "leftSideViewController")
     }
 
     override func viewDidLoad() {
