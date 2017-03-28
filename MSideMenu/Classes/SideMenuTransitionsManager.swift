@@ -8,23 +8,36 @@
 
 import UIKit
 
+/**
+    SideMenuTransitionsManager:
+        - Custom TransitioningDelegate object to handle present/dismiss for the side menu navigation.
+ */
+
 class SideMenuTransitionsManager: NSObject, UIViewControllerTransitioningDelegate {
 
+    /// should return the presentation animator object
     func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return SideMenuPresentationAnimator()
     }
-    //
+    
+    /// should return the dismissal animator object
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return SideMenuDismissalAnimator()
     }
 }
 
+/**
+    SideMenuPresentationAnimator:
+        - Custom object to handle the dismiss custom animation of the side menu.
+ */
 fileprivate class SideMenuPresentationAnimator: NSObject, UIViewControllerAnimatedTransitioning {
-    
+
+    /// set the presentation animation duration
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         return SideMenuManager.presentationDuration
     }
     
+    /// handle the presentation animation behaviour, by transforming the content view to the required scale, and then translate it to the required point..
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         
         guard let toViewController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to),
@@ -39,7 +52,8 @@ fileprivate class SideMenuPresentationAnimator: NSObject, UIViewControllerAnimat
         containerView.addSubview(toViewController.view)
         
         let bounds = UIScreen.main.bounds
-        // get snapshot to do the animation..
+        /// get snapshot to perform the animation, because the fromViewController get's removed from the screen and it causes a flicker, so we use a screenshot to perform the animation then add the fromViewController and remove the screenshot.
+        
         let snapshot = fromViewController.view.snapshotView(afterScreenUpdates: true)
         snapshot?.frame = fromViewController.view.frame
         if let snapshot = snapshot {
@@ -50,10 +64,12 @@ fileprivate class SideMenuPresentationAnimator: NSObject, UIViewControllerAnimat
             toViewController.view.alpha = 1
             fromViewController.view.alpha = SideMenuManager.contentViewControllerOpacity
             snapshot?.alpha = fromViewController.view.alpha
-            
+            /// scale to the required scale then translate the view...
             fromViewController.view.transform  = CGAffineTransform(scaleX: SideMenuManager.contentViewControllerScale,
-                                                                   y: SideMenuManager.contentViewControllerScale).translatedBy(x: bounds.size.width * SideMenuManager.xTranslation,
-                                                                                                                               y: bounds.size.height * SideMenuManager.yTranslation)            
+                                                                   y: SideMenuManager.contentViewControllerScale)
+                                                     .translatedBy(x: bounds.size.width * SideMenuManager.xTranslation,
+                                                                   y: bounds.size.height * SideMenuManager.yTranslation)
+            
             snapshot?.transform  = fromViewController.view.transform
 
             
@@ -61,40 +77,28 @@ fileprivate class SideMenuPresentationAnimator: NSObject, UIViewControllerAnimat
             
             transitionContext.completeTransition(finished)
             if finished {
-                // add the view controller but remove the snapshot
+                /// add the view controller but remove the snapshot
                 toViewController.view.addSubview(fromViewController.view)
                 snapshot?.removeFromSuperview()
             }
         })
         
     }
-    
-    static func setAnchorPoint(_ anchorPoint: CGPoint, forView view: UIView) {
-        var newPoint = CGPoint(x: view.bounds.size.width * anchorPoint.x, y: view.bounds.size.height * anchorPoint.y)
-        var oldPoint = CGPoint(x: view.bounds.size.width * view.layer.anchorPoint.x, y: view.bounds.size.height * view.layer.anchorPoint.y)
-        
-        newPoint = newPoint.applying(view.transform)
-        oldPoint = oldPoint.applying(view.transform)
-        
-        var position = view.layer.position
-        position.x -= oldPoint.x
-        position.x += newPoint.x
-        
-        position.y -= oldPoint.y
-        position.y += newPoint.y
-        
-        view.layer.position = position
-        view.layer.anchorPoint = anchorPoint
-    }
 
 }
 
+/**
+    SideMenuDismissalAnimator:
+        - Custom object to handle the dismiss custom animation of the side menu.
+ */
 fileprivate class SideMenuDismissalAnimator: NSObject, UIViewControllerAnimatedTransitioning {
-    
+
+    /// set the dismiss animation duration
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         return SideMenuManager.dismissDuration
     }
 
+    /// handle the dismiss animation behaviour, by transforming the content view to it's original scale, and then translate it to the origin point.
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         guard let toViewController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to),
             let fromViewController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.from)  else {
@@ -103,9 +107,10 @@ fileprivate class SideMenuDismissalAnimator: NSObject, UIViewControllerAnimatedT
         let containerView = transitionContext.containerView
         let animationDuration = self .transitionDuration(using: transitionContext)
         
-        UIView.animate(withDuration: animationDuration, animations: {
+        UIView.animate(withDuration: animationDuration,
+                       animations: {
             toViewController.view.alpha = 1.0
-            toViewController.view.transform  = CGAffineTransform(scaleX: 1, y: 1.0).translatedBy(x:0, y: 0)
+            toViewController.view.transform  = CGAffineTransform.identity.translatedBy(x:0, y: 0)
         }, completion: { (finished: Bool) -> Void in
             transitionContext.completeTransition(finished)
         })
