@@ -20,16 +20,16 @@ open class SideMenuManager {
     open static var dismissDuration: Double = 0.35
 
     /// The scale of the content view controller
-    open static var contentViewControllerScale: CGFloat = 0.5
+    open static var contentViewControllerScale: CGFloat = 0.7
 
-    /// The amount of translation in X direction., 1.0 it will be centered
-    open static var xTranslation: CGFloat = 0.8
+    /// The amount of translation in X direction, Default is 0.0 and it will stay in the middle width of the screen
+    open static var xTranslation: CGFloat = 0.5
     
-    /// The amount of translation in Y direction.
+    /// The amount of translation in Y direction, Default is 0.0 and it will stay in the middle height of the screen
     open static var yTranslation: CGFloat = 0.0
 
     /// The amount of opacity of the content view controller.
-    open static var contentViewControllerOpacity: CGFloat = 0.8
+    open static var contentViewControllerOpacity: CGFloat = 1.0
     
     /// Side menu view controller 
     open static var sideMenuViewController: UIViewController?

@@ -45,7 +45,6 @@ fileprivate class SideMenuPresentationAnimator: NSObject, UIViewControllerAnimat
         if let snapshot = snapshot {
             containerView.addSubview(snapshot)
         }
-
         UIView.animate(withDuration: animationDuration, animations: {
     
             toViewController.view.alpha = 1
@@ -53,11 +52,11 @@ fileprivate class SideMenuPresentationAnimator: NSObject, UIViewControllerAnimat
             snapshot?.alpha = fromViewController.view.alpha
             
             fromViewController.view.transform  = CGAffineTransform(scaleX: SideMenuManager.contentViewControllerScale,
-                                                     y: SideMenuManager.contentViewControllerScale).translatedBy(x: bounds.size.width * SideMenuManager.xTranslation,
-                                                                                                                 y: bounds.size.height * SideMenuManager.yTranslation)
-            
+                                                                   y: SideMenuManager.contentViewControllerScale).translatedBy(x: bounds.size.width * SideMenuManager.xTranslation,
+                                                                                                                               y: bounds.size.height * SideMenuManager.yTranslation)            
             snapshot?.transform  = fromViewController.view.transform
 
+            
         }, completion: { (finished: Bool) -> Void in
             
             transitionContext.completeTransition(finished)
@@ -70,6 +69,24 @@ fileprivate class SideMenuPresentationAnimator: NSObject, UIViewControllerAnimat
         
     }
     
+    static func setAnchorPoint(_ anchorPoint: CGPoint, forView view: UIView) {
+        var newPoint = CGPoint(x: view.bounds.size.width * anchorPoint.x, y: view.bounds.size.height * anchorPoint.y)
+        var oldPoint = CGPoint(x: view.bounds.size.width * view.layer.anchorPoint.x, y: view.bounds.size.height * view.layer.anchorPoint.y)
+        
+        newPoint = newPoint.applying(view.transform)
+        oldPoint = oldPoint.applying(view.transform)
+        
+        var position = view.layer.position
+        position.x -= oldPoint.x
+        position.x += newPoint.x
+        
+        position.y -= oldPoint.y
+        position.y += newPoint.y
+        
+        view.layer.position = position
+        view.layer.anchorPoint = anchorPoint
+    }
+
 }
 
 fileprivate class SideMenuDismissalAnimator: NSObject, UIViewControllerAnimatedTransitioning {

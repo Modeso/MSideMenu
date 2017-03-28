@@ -25,17 +25,17 @@
                                 <rect key="frame" x="16" y="113" width="34" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="Ykj-UD-r8S"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1276" y="-54.422788605697157"/>
+            <point key="canvasLocation" x="1393" y="-63"/>
         </scene>
         <!--Left Menu View Controller-->
         <scene sceneID="nzS-ln-rhb">
@@ -54,7 +54,9 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="h01-bj-jzk"/>
                                 </constraints>
-                                <state key="normal" title="First"/>
+                                <state key="normal" title="First">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
                                 <connections>
                                     <action selector="didTapFirstViewController:" destination="els-JI-M2V" eventType="touchUpInside" id="9hM-q1-xJy"/>
                                 </connections>
@@ -64,13 +66,15 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="aWa-2M-vbQ"/>
                                 </constraints>
-                                <state key="normal" title="Second"/>
+                                <state key="normal" title="Second">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
                                 <connections>
                                     <action selector="didTapSecondViewController:" destination="els-JI-M2V" eventType="touchUpInside" id="PEf-RI-Fzr"/>
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="0.42352941179999998" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.19117881797128058" green="0.47232957113549751" blue="0.99807307445085969" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="K4N-uL-cL8" firstAttribute="leading" secondItem="WKk-tF-WuW" secondAttribute="leading" constant="8" id="1YD-qp-URg"/>
                             <constraint firstAttribute="trailing" secondItem="aXi-zc-VV7" secondAttribute="trailing" constant="8" id="bte-fp-GHU"/>
@@ -105,12 +109,12 @@
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="0.81960784310000001" blue="0.34901960780000002" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Se1-59-2Fw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2721" y="95"/>
+            <point key="canvasLocation" x="2713" y="-54"/>
         </scene>
         <!--Side Menu Navigation Controller-->
         <scene sceneID="UUu-qQ-RrI">
