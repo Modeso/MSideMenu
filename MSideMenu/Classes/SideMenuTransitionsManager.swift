@@ -59,21 +59,34 @@ fileprivate class SideMenuPresentationAnimator: NSObject, UIViewControllerAnimat
         if let snapshot = snapshot {
             containerView.addSubview(snapshot)
         }
-        UIView.animate(withDuration: animationDuration, animations: {
-    
-            toViewController.view.alpha = 1
-            fromViewController.view.alpha = SideMenuManager.contentViewControllerOpacity
-            snapshot?.alpha = fromViewController.view.alpha
-            /// scale to the required scale then translate the view...
-            fromViewController.view.transform  = CGAffineTransform(scaleX: SideMenuManager.contentViewControllerScale,
-                                                                   y: SideMenuManager.contentViewControllerScale)
-                                                     .translatedBy(x: bounds.size.width * SideMenuManager.xTranslation,
-                                                                   y: bounds.size.height * SideMenuManager.yTranslation)
+        
+        /// check if the view should have shadow...
+        if SideMenuManager.contentViewHasShadow {
             
-            snapshot?.transform  = fromViewController.view.transform
+            fromViewController.view.applyShadow(SideMenuManager.contentViewShadowColor, offset: SideMenuManager.contentViewShadowOffset, opacity: SideMenuManager.contentViewShadowOpacity, radius: CGFloat(SideMenuManager.contentViewShadowRadius))
 
-            
-        }, completion: { (finished: Bool) -> Void in
+            snapshot?.applyShadow(SideMenuManager.contentViewShadowColor, offset: SideMenuManager.contentViewShadowOffset, opacity: SideMenuManager.contentViewShadowOpacity, radius: CGFloat(SideMenuManager.contentViewShadowRadius))
+        }
+
+        UIView.animate(withDuration: animationDuration,
+                       delay: 0.0,
+                       usingSpringWithDamping: CGFloat(SideMenuManager.presentationAnimationSpringWithDamping),
+                       initialSpringVelocity: CGFloat(SideMenuManager.presentationAnimationInitialSpringVelocity),
+                       options: .curveEaseInOut,
+                       animations: {
+                        
+                        toViewController.view.alpha = 1
+                        fromViewController.view.alpha = SideMenuManager.contentViewControllerOpacity
+                        snapshot?.alpha = fromViewController.view.alpha
+                        /// scale to the required scale then translate the view...
+                        fromViewController.view.transform  = CGAffineTransform(scaleX: SideMenuManager.contentViewControllerScale,
+                                                                               y: SideMenuManager.contentViewControllerScale)
+                            .translatedBy(x: bounds.size.width * SideMenuManager.xTranslation,
+                                          y: bounds.size.height * SideMenuManager.yTranslation)
+                        
+                        snapshot?.transform  = fromViewController.view.transform
+
+        }) { (finished) in
             
             transitionContext.completeTransition(finished)
             if finished {
@@ -81,8 +94,9 @@ fileprivate class SideMenuPresentationAnimator: NSObject, UIViewControllerAnimat
                 toViewController.view.addSubview(fromViewController.view)
                 snapshot?.removeFromSuperview()
             }
-        })
-        
+
+        }
+
     }
 
 }
@@ -108,6 +122,10 @@ fileprivate class SideMenuDismissalAnimator: NSObject, UIViewControllerAnimatedT
         let animationDuration = self .transitionDuration(using: transitionContext)
         
         UIView.animate(withDuration: animationDuration,
+                       delay: 0.0,
+                       usingSpringWithDamping: CGFloat(SideMenuManager.dismissAnimationSpringWithDamping),
+                       initialSpringVelocity: CGFloat(SideMenuManager.dismissAnimationInitialSpringVelocity),
+                       options: .curveEaseInOut,
                        animations: {
             toViewController.view.alpha = 1.0
             toViewController.view.transform  = CGAffineTransform.identity.translatedBy(x:0, y: 0)

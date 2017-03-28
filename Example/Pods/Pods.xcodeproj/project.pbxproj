@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0233BD0E1E8AA25E002738BF /* UIView+MHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0233BD0D1E8AA25E002738BF /* UIView+MHelpers.swift */; };
 		04A7411DEFE165FBD77234CB625DC99E /* Pods-MSideMenu_Tests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = CB357736A2BBE0F605AAE8B8D844C941 /* Pods-MSideMenu_Tests-dummy.m */; };
 		17A1294B9CB1D0570A793843CA3B7261 /* MSideMenu-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 991D87043BD4D78C5036046F294C4F2D /* MSideMenu-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1B9A3D1B567C911C9E1F7436EEE258E0 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBB3DE36805AF21409EC968A9691732F /* Foundation.framework */; };
@@ -32,6 +33,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0233BD0D1E8AA25E002738BF /* UIView+MHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+MHelpers.swift"; sourceTree = "<group>"; };
 		24D698FF7D148E18DF555A1B928F0BAF /* SideMenuManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SideMenuManager.swift; sourceTree = "<group>"; };
 		26D96E0A052FB5589AB8A005AAC9EDBA /* Pods-MSideMenu_Tests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-MSideMenu_Tests-acknowledgements.plist"; sourceTree = "<group>"; };
 		393084046796F91121E39EBE200429EC /* Pods_MSideMenu_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MSideMenu_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -171,6 +173,7 @@
 				24D698FF7D148E18DF555A1B928F0BAF /* SideMenuManager.swift */,
 				7B17ECF7B28ACC874CB4F818BB55B2CD /* SideMenuNavigationController.swift */,
 				3E685CFA089F22BFD346D018F4629BE7 /* SideMenuTransitionsManager.swift */,
+				0233BD0D1E8AA25E002738BF /* UIView+MHelpers.swift */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -354,6 +357,7 @@
 				3DA4BFE16708207B83A9776FB62D6134 /* MSideMenu-dummy.m in Sources */,
 				DF0423185DB0C4DB91018E9BD5218A17 /* SideMenuManager.swift in Sources */,
 				BF791FAEEBF3199631A22B0F43388A9E /* SideMenuNavigationController.swift in Sources */,
+				0233BD0E1E8AA25E002738BF /* UIView+MHelpers.swift in Sources */,
 				B85F6B478606AB4BF5985F926032364D /* SideMenuTransitionsManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
