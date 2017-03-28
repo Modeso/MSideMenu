@@ -1,4 +1,4 @@
-# MNavigationTabs
+# MSideMenu
 <p align="center">
   <img src="https://media.licdn.com/mpr/mpr/shrink_200_200/AAEAAQAAAAAAAAZsAAAAJDM2NTU0MDA1LTA3YmEtNGUyMC05YmZjLTIxMDNlZWZlM2ZkMQ.png">
 </p>
@@ -51,7 +51,7 @@ $ gem install cocoapods
 
 > CocoaPods 1.2.0+ is required to build MSideMenu.
 
-To integrate MNavigationTabs into your Xcode project using CocoaPods, specify it in your `Podfile`:
+To integrate MSideMenu into your Xcode project using CocoaPods, specify it in your `Podfile`:
 
 ```ruby
 source 'https://github.com/CocoaPods/Specs.git'
@@ -80,7 +80,7 @@ $ brew update
 $ brew install carthage
 ```
 
-To integrate MNavigationTabs into your Xcode project using Carthage, specify it in your `Cartfile`:
+To integrate MSideMenu into your Xcode project using Carthage, specify it in your `Cartfile`:
 
 ```ogdl
 github "Modeso/MSideMenu"
