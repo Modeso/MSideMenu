@@ -101,7 +101,8 @@ If you prefer not to use either of the aforementioned dependency managers, you c
 <img src="https://github.com/Modeso/MSideMenu/blob/master/storyboard_example.png" alt="Storyboard">
 - Create Navigation controller with class 'SideMenuNavigationController'.
 ### Code 
-- Set the sideMenuViewController property of the SideMenuManager with the view controller that will be in the side menu:
+
+Set the `sideMenuViewController` property of the `SideMenuManager` with the view controller that will be in the side menu:
 ```swift
 SideMenuManager.sideMenuViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "leftSideViewController")
 ```
