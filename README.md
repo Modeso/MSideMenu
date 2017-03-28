@@ -24,6 +24,9 @@ MSideMenu is a Side Menu library written in Swift. It enables a flexible use for
 - [License](#license)
 
 ## Options
+
+<img src="https://github.com/Modeso/MSideMenu/blob/master/properties.png" alt="Proprties">
+
 - `presentationDuration`: set the duration of the presentation animation of the side menu.
 - `dismissDuration`: set the duration of the dismissal animation of the side menu.
 - `contentViewControllerScale`: set the scale of the content view controller.
@@ -31,6 +34,17 @@ MSideMenu is a Side Menu library written in Swift. It enables a flexible use for
 - `yTranslation`: set the translation in y direction for the content view controller. Default value is 0.0, and it will cause the content view controller to stay at center of the screen
 - `contentViewControllerOpacity`: set the alpha of the content view controller.
 - `shouldDismissOnTappingContentVC`: enable or disable the gsture recognizer that dismisses the side menu on clicking on the content view controller.
+- `contentViewHasShadow`: enable or disable the shadow of the content view controller.
+- `contentViewShadowColor`: set the color of the shadow of the content view controller.
+- `contentViewShadowOffset`: set the offset of the shadow of the content view controller.
+- `contentViewShadowOpacity`: set the opacity of the shadow of the content view controller.
+- `contentViewShadowRadius`: set the radius of the shadow of the content view controller.
+- `presentationAnimationSpringWithDamping`: set the spring with damping ratio for the presentation animation.
+- `presentationAnimationInitialSpringVelocity`: set the initial velocity ratio for the presentation animation.
+- `dismissAnimationSpringWithDamping`: set the spring with damping ratio for the dismissal animation.
+- `dismissAnimationInitialSpringVelocity`: set the initial velocity ratio for the dismissal animation.
+
+    
 
 ## Requirements
 
@@ -98,14 +112,29 @@ If you prefer not to use either of the aforementioned dependency managers, you c
 
 ### SideMenuNavigationController
 
-<img src="https://github.com/Modeso/MSideMenu/blob/master/storyboard_example.png" alt="Storyboard">
-- Create Navigation controller with class 'SideMenuNavigationController'.
+## Creation
+- Create Navigation controller in the storyboard and set the class to `SideMenuNavigationController`.
+- In this RootViewController of this navigation controller, use the `override func awakeFromNib` to set the `sideMenuViewController` property for the navigation controller.
 
-### Code 
-
-Set the `sideMenuViewController` property of the `SideMenuManager` with the view controller that will be in the side menu:
 ```swift
-SideMenuManager.sideMenuViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "leftSideViewController")
+        guard let sideMenuNavController = self.navigationController as? SideMenuNavigationController else {
+            return
+        }
+        sideMenuNavController.sideMenuViewController = UIStoryboard(name: "Main", bundle:  nil).instantiateViewController(withIdentifier: "leftSideViewController")
+
+```
+## Dismiss
+
+- use `closeSideMenu()` method that's available in the `SideMenuNavigationController`
+
+```swift
+    sideMenuNavController.closeSideMenu()
+```
+## Change Content View Controller
+- use the `setViewControllers` of the navigation controller
+
+```swift
+    sideMenuNavController.setViewControllers([newViewController], animated: false)
 ```
 
 ## Communication
