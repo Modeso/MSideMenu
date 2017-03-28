@@ -34,14 +34,17 @@ fileprivate class SideMenuPresentationAnimator: NSObject, UIViewControllerAnimat
 
     /// set the presentation animation duration
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
-        return SideMenuManager.presentationDuration
+        guard let fromViewController = transitionContext?.viewController(forKey: UITransitionContextViewControllerKey.from) as? SideMenuNavigationController else {
+            return 0.0
+        }
+        return fromViewController.presentationDuration
     }
     
     /// handle the presentation animation behaviour, by transforming the content view to the required scale, and then translate it to the required point..
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         
         guard let toViewController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to),
-        let fromViewController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.from)  else {
+        let fromViewController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.from) as? SideMenuNavigationController  else {
             return
         }
         
@@ -61,28 +64,28 @@ fileprivate class SideMenuPresentationAnimator: NSObject, UIViewControllerAnimat
         }
         
         /// check if the view should have shadow...
-        if SideMenuManager.contentViewHasShadow {
+        if fromViewController.contentViewHasShadow {
             
-            fromViewController.view.applyShadow(SideMenuManager.contentViewShadowColor, offset: SideMenuManager.contentViewShadowOffset, opacity: SideMenuManager.contentViewShadowOpacity, radius: CGFloat(SideMenuManager.contentViewShadowRadius))
+            fromViewController.view.applyShadow(fromViewController.contentViewShadowColor, offset: fromViewController.contentViewShadowOffset, opacity: fromViewController.contentViewShadowOpacity, radius: CGFloat(fromViewController.contentViewShadowRadius))
 
-            snapshot?.applyShadow(SideMenuManager.contentViewShadowColor, offset: SideMenuManager.contentViewShadowOffset, opacity: SideMenuManager.contentViewShadowOpacity, radius: CGFloat(SideMenuManager.contentViewShadowRadius))
+            snapshot?.applyShadow(fromViewController.contentViewShadowColor, offset: fromViewController.contentViewShadowOffset, opacity: fromViewController.contentViewShadowOpacity, radius: CGFloat(fromViewController.contentViewShadowRadius))
         }
 
         UIView.animate(withDuration: animationDuration,
                        delay: 0.0,
-                       usingSpringWithDamping: CGFloat(SideMenuManager.presentationAnimationSpringWithDamping),
-                       initialSpringVelocity: CGFloat(SideMenuManager.presentationAnimationInitialSpringVelocity),
+                       usingSpringWithDamping: CGFloat(fromViewController.presentationAnimationSpringWithDamping),
+                       initialSpringVelocity: CGFloat(fromViewController.presentationAnimationInitialSpringVelocity),
                        options: .curveEaseInOut,
                        animations: {
                         
                         toViewController.view.alpha = 1
-                        fromViewController.view.alpha = SideMenuManager.contentViewControllerOpacity
+                        fromViewController.view.alpha = fromViewController.contentViewControllerOpacity
                         snapshot?.alpha = fromViewController.view.alpha
                         /// scale to the required scale then translate the view...
-                        fromViewController.view.transform  = CGAffineTransform(scaleX: SideMenuManager.contentViewControllerScale,
-                                                                               y: SideMenuManager.contentViewControllerScale)
-                            .translatedBy(x: bounds.size.width * SideMenuManager.xTranslation,
-                                          y: bounds.size.height * SideMenuManager.yTranslation)
+                        fromViewController.view.transform  = CGAffineTransform(scaleX: fromViewController.contentViewControllerScale,
+                                                                               y: fromViewController.contentViewControllerScale)
+                            .translatedBy(x: bounds.size.width * fromViewController.xTranslation,
+                                          y: bounds.size.height * fromViewController.yTranslation)
                         
                         snapshot?.transform  = fromViewController.view.transform
 
@@ -109,12 +112,15 @@ fileprivate class SideMenuDismissalAnimator: NSObject, UIViewControllerAnimatedT
 
     /// set the dismiss animation duration
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
-        return SideMenuManager.dismissDuration
+        guard let toViewController = transitionContext?.viewController(forKey: UITransitionContextViewControllerKey.to) as? SideMenuNavigationController else {
+            return 0.0
+        }
+        return toViewController.dismissDuration
     }
 
     /// handle the dismiss animation behaviour, by transforming the content view to it's original scale, and then translate it to the origin point.
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
-        guard let toViewController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to),
+        guard let toViewController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to) as? SideMenuNavigationController,
             let fromViewController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.from)  else {
                 return
         }
@@ -123,8 +129,8 @@ fileprivate class SideMenuDismissalAnimator: NSObject, UIViewControllerAnimatedT
         
         UIView.animate(withDuration: animationDuration,
                        delay: 0.0,
-                       usingSpringWithDamping: CGFloat(SideMenuManager.dismissAnimationSpringWithDamping),
-                       initialSpringVelocity: CGFloat(SideMenuManager.dismissAnimationInitialSpringVelocity),
+                       usingSpringWithDamping: CGFloat(toViewController.dismissAnimationSpringWithDamping),
+                       initialSpringVelocity: CGFloat(toViewController.dismissAnimationInitialSpringVelocity),
                        options: .curveEaseInOut,
                        animations: {
             toViewController.view.alpha = 1.0

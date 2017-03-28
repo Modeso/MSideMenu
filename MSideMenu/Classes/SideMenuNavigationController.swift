@@ -12,20 +12,87 @@ import UIKit
     SideMenuNavigationController:
         - The Navigation Controller of the Side Menu.
     How to use:
-        - Just use this navigation controller as entery point and it should has a root view controller.
+        - Just use this navigation controller as entery point and it should has a root view controller, and specify the sideMenuViewController.
  */
 open class SideMenuNavigationController: UINavigationController {
 
-    /// transitionDelegate: Custom transition manager to mange the custom Modal transition for the side menu.
-    fileprivate let transitionDelegate: SideMenuTransitionsManager = SideMenuTransitionsManager()
-    
-    /// tapGesture: gesture recognizer to handle dismissing the menu on Clicking on the content view controller.
-    fileprivate var tapGesture: UITapGestureRecognizer?
-
+    /// The side menu Image
     @IBInspectable open var sideMenuImage: UIImage?
     
-    // MARK: - Init
+    /// Duration of the animation that the menu needs to be presented. Default is 0.35 seconds.
+    @IBInspectable open var presentationDuration: Double  = 0.35
+    
+    /// Duration of the animation that the menu needs to be dismissed. Default is 0.35 seconds.
+    @IBInspectable open var dismissDuration: Double  = 0.35
+    
+    /// The scale of the content view controller
+    @IBInspectable open var contentViewControllerScale: CGFloat = 0.5
+    
+    
+    /// The amount of translation in X direction, Value 0.0 will stay in the middle of the screen
+    @IBInspectable open var xTranslation: CGFloat  = 0.5
+    
+    
+    /// The amount of translation in Y direction, Default is 0.0 and it will stay in the middle of the screen
+    @IBInspectable open var yTranslation: CGFloat  = 0.0
+    
+    
+    /// The amount of opacity of the content view controller.
+    @IBInspectable open var contentViewControllerOpacity: CGFloat = 1.0
+    
+    
+    /// Handle if tapping in the animated content view controller should dismiss the side menu or not
+    @IBInspectable open var shouldDismissOnTappingContentVC: Bool  = true
+    
+    
+    /// Handle if the content view controller will have shadow or not
+    @IBInspectable open var contentViewHasShadow: Bool = true
+    
+    
+    /// Color of the shadow of the content view controller
+    @IBInspectable open var contentViewShadowColor: UIColor = UIColor.black
+    
+    
+    /// Offset of the shadow of the content view controller
+    @IBInspectable open var contentViewShadowOffset: CGSize = .zero
+    
+    
+    /// Opacity of the shadow of the content view controller
+    @IBInspectable open var contentViewShadowOpacity: Float = 1.0
+    
+    
+    /// Radius of the shadow of the content view controller
+    @IBInspectable open var contentViewShadowRadius: Float = 10.0
+    
+    /// Value for the Spring with Damping for Presentation animation
+    @IBInspectable open var presentationAnimationSpringWithDamping: Float = 0.5
+    
+    
+    /// Value for the Initial Spring Velocity for presentation Animation
+    @IBInspectable open var presentationAnimationInitialSpringVelocity: Float = 0.5
+    
+    
+    /// Value for the Spring with Damping for Dismissal animation
+    @IBInspectable open var dismissAnimationSpringWithDamping: Float = 1.0
+    
+    
+    /// Value for the Initial Spring Velocity for Dismissal Animation
+    @IBInspectable open var dismissAnimationInitialSpringVelocity: Float = 1.0
 
+    
+    /// Side Menu View Controller
+    open var sideMenuViewController: UIViewController?
+
+    // MARK: - Private Properties
+
+    /// transitionDelegate: Custom transition manager to mange the custom Modal transition for the side menu.
+    let transitionDelegate: SideMenuTransitionsManager = SideMenuTransitionsManager()
+    
+    /// tapGesture: gesture recognizer to handle dismissing the menu on Clicking on the content view controller.
+    var tapGesture: UITapGestureRecognizer?
+
+    // MARK: - Init
+    
     override open func viewDidLoad() {
         super.viewDidLoad()
         self.delegate = self
@@ -65,7 +132,6 @@ open class SideMenuNavigationController: UINavigationController {
 }
 
 // MARK: - UINavigationControllerDelegate
-
 extension SideMenuNavigationController: UINavigationControllerDelegate {
     
     public func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
@@ -74,43 +140,3 @@ extension SideMenuNavigationController: UINavigationControllerDelegate {
     }
 }
 
-// MARK: - Actions
-
-extension SideMenuNavigationController {
-    
-    /**
-        This method is used to handle clicking on the menu button in the navigation controller.
-        It checks if the side menu is presented, then close the side menu, and if it's not presented, persent the side menu with the custom transition
-    */
-    func didTapSideMenu() {
-    
-        guard let _  = self.presentedViewController else {
-            
-            // present the left side menu...
-            self.tapGesture?.isEnabled = SideMenuManager.shouldDismissOnTappingContentVC
-            SideMenuManager.sideMenuViewController?.transitioningDelegate = transitionDelegate
-            // add gesture for the visible view controller
-            guard let sideMenuVC = SideMenuManager.sideMenuViewController else {
-                return
-            }
-            self.present(sideMenuVC, animated: true, completion: nil)
-
-            
-            return
-        }
-        self.closeSideMenu()
-    }
-    
-    /**
-        This method is used to close the side menu.
-     */
-    open func closeSideMenu() {
-        
-        guard let presented = self.presentedViewController else {
-            return
-        }
-        self.tapGesture?.isEnabled = false
-        presented.dismiss(animated: true, completion: nil)
-    }
- 
-}
