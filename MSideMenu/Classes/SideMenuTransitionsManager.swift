@@ -71,13 +71,16 @@ fileprivate class SideMenuPresentationAnimator: NSObject, UIViewControllerAnimat
             snapshot?.applyShadow(fromViewController.contentViewShadowColor, offset: fromViewController.contentViewShadowOffset, opacity: fromViewController.contentViewShadowOpacity, radius: CGFloat(fromViewController.contentViewShadowRadius))
         }
 
+        toViewController.view.transform  = CGAffineTransform(scaleX: CGFloat(fromViewController.leftSideMenuViewControllerScale),
+                                                               y: CGFloat(fromViewController.leftSideMenuViewControllerScale))
+
         UIView.animate(withDuration: animationDuration,
                        delay: 0.0,
                        usingSpringWithDamping: CGFloat(fromViewController.presentationAnimationSpringWithDamping),
                        initialSpringVelocity: CGFloat(fromViewController.presentationAnimationInitialSpringVelocity),
                        options: .curveEaseInOut,
                        animations: {
-                        
+                        toViewController.view.transform  = CGAffineTransform.identity
                         toViewController.view.alpha = 1
                         fromViewController.view.alpha = fromViewController.contentViewControllerOpacity
                         snapshot?.alpha = fromViewController.view.alpha
@@ -127,16 +130,26 @@ fileprivate class SideMenuDismissalAnimator: NSObject, UIViewControllerAnimatedT
         let containerView = transitionContext.containerView
         let animationDuration = self .transitionDuration(using: transitionContext)
         
+        containerView.addSubview(toViewController.view)
+
         UIView.animate(withDuration: animationDuration,
                        delay: 0.0,
                        usingSpringWithDamping: CGFloat(toViewController.dismissAnimationSpringWithDamping),
                        initialSpringVelocity: CGFloat(toViewController.dismissAnimationInitialSpringVelocity),
                        options: .curveEaseInOut,
                        animations: {
+            /// container animation
             toViewController.view.alpha = 1.0
             toViewController.view.transform  = CGAffineTransform.identity.translatedBy(x:0, y: 0)
+            /// left side menu animation
+            fromViewController.view.transform  = CGAffineTransform(scaleX: CGFloat(toViewController.leftSideMenuViewControllerScale),
+                                                                               y: CGFloat(toViewController.leftSideMenuViewControllerScale))
+                        
+
+
         }, completion: { (finished: Bool) -> Void in
             transitionContext.completeTransition(finished)
+            fromViewController.view.transform  = CGAffineTransform.identity
         })
 
     }

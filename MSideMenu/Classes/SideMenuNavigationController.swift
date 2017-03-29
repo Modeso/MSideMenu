@@ -28,6 +28,9 @@ open class SideMenuNavigationController: UINavigationController {
     /// The scale of the content view controller
     @IBInspectable open var contentViewControllerScale: CGFloat = 0.5
     
+    /// Value for the scale of the left side menu while dismissing and presenting
+    @IBInspectable open var leftSideMenuViewControllerScale: Float = 1.2
+
     
     /// The amount of translation in X direction, Value 0.0 will stay in the middle of the screen
     @IBInspectable open var xTranslation: CGFloat  = 0.5
