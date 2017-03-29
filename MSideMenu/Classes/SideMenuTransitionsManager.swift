@@ -15,6 +15,7 @@ import UIKit
 
 class SideMenuTransitionsManager: NSObject, UIViewControllerTransitioningDelegate {
 
+    var interactor: Interactor?
     /// should return the presentation animator object
     func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return SideMenuPresentationAnimator()
@@ -24,8 +25,20 @@ class SideMenuTransitionsManager: NSObject, UIViewControllerTransitioningDelegat
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return SideMenuDismissalAnimator()
     }
+    
+    /// should return the intercative dismissal animator object
+    func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
+        guard let interactor = self.interactor else {
+            return nil
+        }
+        return interactor.hasStarted ? interactor : nil
+    }
 }
 
+class Interactor: UIPercentDrivenInteractiveTransition {
+    var hasStarted = false
+    var shouldFinish = false
+}
 /**
     SideMenuPresentationAnimator:
         - Custom object to handle the dismiss custom animation of the side menu.
@@ -91,6 +104,7 @@ fileprivate class SideMenuPresentationAnimator: NSObject, UIViewControllerAnimat
                                           y: bounds.size.height * fromViewController.yTranslation)
                         
                         snapshot?.transform  = fromViewController.view.transform
+                        toViewController.view.frame = bounds
 
         }) { (finished) in
             
@@ -148,8 +162,9 @@ fileprivate class SideMenuDismissalAnimator: NSObject, UIViewControllerAnimatedT
 
 
         }, completion: { (finished: Bool) -> Void in
-            transitionContext.completeTransition(finished)
+        
             fromViewController.view.transform  = CGAffineTransform.identity
+            transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
         })
 
     }

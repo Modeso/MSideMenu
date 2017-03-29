@@ -31,7 +31,6 @@ open class SideMenuNavigationController: UINavigationController {
     /// Value for the scale of the left side menu while dismissing and presenting
     @IBInspectable open var leftSideMenuViewControllerScale: Float = 1.2
 
-    
     /// The amount of translation in X direction, Value 0.0 will stay in the middle of the screen
     @IBInspectable open var xTranslation: CGFloat  = 0.5
     
@@ -86,6 +85,9 @@ open class SideMenuNavigationController: UINavigationController {
     /// Side Menu View Controller
     open var sideMenuViewController: UIViewController?
 
+    /// Interactor object to handle dragging the side menu when dismissing it
+    let interactor = Interactor()
+
     // MARK: - Private Properties
 
     /// transitionDelegate: Custom transition manager to mange the custom Modal transition for the side menu.
@@ -94,10 +96,16 @@ open class SideMenuNavigationController: UINavigationController {
     /// tapGesture: gesture recognizer to handle dismissing the menu on Clicking on the content view controller.
     var tapGesture: UITapGestureRecognizer?
 
+    /// tapGesture: gesture recognizer to handle dismissing the menu on dragging.
+    var dragTapGesture: UIPanGestureRecognizer?
+
     // MARK: - Init
     
     override open func viewDidLoad() {
         super.viewDidLoad()
+        
+        transitionDelegate.interactor = self.interactor
+        
         self.delegate = self
         self.setupGestureRecognizer()
     }
@@ -115,6 +123,14 @@ open class SideMenuNavigationController: UINavigationController {
             return
         }
         self.view.addGestureRecognizer(tapGesture)
+        
+        self.dragTapGesture = UIPanGestureRecognizer(target: self, action: #selector(handleDragGesture))
+        self.dragTapGesture?.minimumNumberOfTouches = 0
+        guard let dragTapGesture = self.dragTapGesture else {
+            return
+        }
+        self.view.addGestureRecognizer(dragTapGesture)
+
     }
     
     /**
@@ -131,6 +147,43 @@ open class SideMenuNavigationController: UINavigationController {
 
         viewController.navigationItem.leftBarButtonItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(didTapSideMenu))
     }
+
+    ////
+    
+    fileprivate func handleDragGesture(sender: UIPanGestureRecognizer) {
+        
+        let percentThreshold:CGFloat = 0.3
+        
+        // convert y-position to downward pull progress (percentage)
+        let translation = sender.translation(in: view)
+        let verticalMovement = translation.y / view.bounds.height
+        let downwardMovement = fmaxf(Float(verticalMovement), 0.0)
+        let downwardMovementPercent = fminf(downwardMovement, 1.0)
+        let progress = CGFloat(downwardMovementPercent) * 1 / contentViewControllerScale
+        
+        switch sender.state {
+        case .began:
+            interactor.hasStarted = true
+            dismiss(animated: true, completion: nil)
+
+        case .changed:
+            interactor.shouldFinish = progress > percentThreshold
+            interactor.update(progress)
+
+        case .cancelled:
+            interactor.hasStarted = false
+            interactor.cancel()
+
+        case .ended:
+            interactor.hasStarted = false
+            interactor.shouldFinish
+                ? interactor.finish()
+                : interactor.cancel()
+        default:
+            break
+        }
+    }
+    
 
 }
 
