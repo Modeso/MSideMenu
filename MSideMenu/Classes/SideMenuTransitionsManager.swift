@@ -25,7 +25,13 @@ class SideMenuTransitionsManager: NSObject, UIViewControllerTransitioningDelegat
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return SideMenuDismissalAnimator()
     }
-    
+    func interactionControllerForPresentation(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
+        guard let interactor = self.interactor else {
+            return nil
+        }
+        return interactor.hasStarted ? interactor : nil
+
+    }
     /// should return the intercative dismissal animator object
     func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
         guard let interactor = self.interactor else {
@@ -35,14 +41,38 @@ class SideMenuTransitionsManager: NSObject, UIViewControllerTransitioningDelegat
     }
 }
 
-class Interactor: UIPercentDrivenInteractiveTransition {
-    var hasStarted = false
-    var shouldFinish = false
+/**
+    Transition Enum
+    - Enumerator to present the interaction types like dismissing and presenting.
+ */
+
+enum Transition: Int {
+    case presenting
+    case dismissing
+    case none
 }
+
+/**
+    Interactor
+    - To handle user interactor with side menu while presenting or dismissing using the dragging.
+ */
+
+class Interactor: UIPercentDrivenInteractiveTransition {
+    /// hold if the user dragging is started or not
+    var hasStarted = false
+    
+    /// hold if the interactor should finish transition or cancel
+    var shouldFinish = false
+    
+    /// hold the current transition type
+    var currentTransitionType: Transition = .none
+}
+
 /**
     SideMenuPresentationAnimator:
         - Custom object to handle the dismiss custom animation of the side menu.
  */
+
 fileprivate class SideMenuPresentationAnimator: NSObject, UIViewControllerAnimatedTransitioning {
 
     /// set the presentation animation duration
@@ -65,6 +95,7 @@ fileprivate class SideMenuPresentationAnimator: NSObject, UIViewControllerAnimat
         let animationDuration = self .transitionDuration(using: transitionContext)
         
         toViewController.view.alpha = 0.0
+        toViewController.view.frame.origin = .zero
         containerView.addSubview(toViewController.view)
         
         let bounds = UIScreen.main.bounds
@@ -91,7 +122,7 @@ fileprivate class SideMenuPresentationAnimator: NSObject, UIViewControllerAnimat
                        delay: 0.0,
                        usingSpringWithDamping: CGFloat(fromViewController.presentationAnimationSpringWithDamping),
                        initialSpringVelocity: CGFloat(fromViewController.presentationAnimationInitialSpringVelocity),
-                       options: .curveEaseInOut,
+                       options: .allowUserInteraction,
                        animations: {
                         toViewController.view.transform  = CGAffineTransform.identity
                         toViewController.view.alpha = 1
@@ -107,14 +138,13 @@ fileprivate class SideMenuPresentationAnimator: NSObject, UIViewControllerAnimat
                         toViewController.view.frame = bounds
 
         }) { (finished) in
-            
-            transitionContext.completeTransition(finished)
-            if finished {
-                /// add the view controller but remove the snapshot
+            transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
+
+            if !transitionContext.transitionWasCancelled {
+                /// did presented
                 toViewController.view.addSubview(fromViewController.view)
                 snapshot?.removeFromSuperview()
             }
-
         }
 
     }
@@ -125,6 +155,7 @@ fileprivate class SideMenuPresentationAnimator: NSObject, UIViewControllerAnimat
     SideMenuDismissalAnimator:
         - Custom object to handle the dismiss custom animation of the side menu.
  */
+
 fileprivate class SideMenuDismissalAnimator: NSObject, UIViewControllerAnimatedTransitioning {
 
     /// set the dismiss animation duration
@@ -158,13 +189,13 @@ fileprivate class SideMenuDismissalAnimator: NSObject, UIViewControllerAnimatedT
             /// left side menu animation
             fromViewController.view.transform  = CGAffineTransform(scaleX: CGFloat(toViewController.leftSideMenuViewControllerScale),
                                                                                y: CGFloat(toViewController.leftSideMenuViewControllerScale))
-                        
-
 
         }, completion: { (finished: Bool) -> Void in
         
+            /// did dismisses
             fromViewController.view.transform  = CGAffineTransform.identity
             transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
+
         })
 
     }
