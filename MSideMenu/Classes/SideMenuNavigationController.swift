@@ -46,6 +46,8 @@ open class SideMenuNavigationController: UINavigationController {
     /// Handle if tapping in the animated content view controller should dismiss the side menu or not
     @IBInspectable open var shouldDismissOnTappingContentVC: Bool  = true
     
+    /// Handle if user can drag to present or dismiss
+    @IBInspectable open var interactivePresentationAndDismissal: Bool  = false
     
     /// Handle if the content view controller will have shadow or not
     @IBInspectable open var contentViewHasShadow: Bool = true
@@ -118,23 +120,30 @@ open class SideMenuNavigationController: UINavigationController {
         This method is used to setup the gesture recognizer that will be used to dismiss the menu on tapping on the content view controller.
      */
     fileprivate func setupGestureRecognizer() {
-        self.tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapSideMenu))
-        self.tapGesture?.numberOfTapsRequired = 1
-        guard let tapGesture = self.tapGesture else {
-            return
-        }
-        self.tapGesture?.delegate = self
-        self.view.addGestureRecognizer(tapGesture)
-        
-        self.dragTapGesture = UIPanGestureRecognizer(target: self, action: #selector(handleDragGesture))
-        self.dragTapGesture?.minimumNumberOfTouches = 1
-        guard let dragTapGesture = self.dragTapGesture else {
-            return
-        }
-        self.dragTapGesture?.delegate = self
+        /// if user can tap to dismiss
+        if self.shouldDismissOnTappingContentVC {
+            
+            self.tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapSideMenu))
+            self.tapGesture?.numberOfTapsRequired = 1
+            guard let tapGesture = self.tapGesture else {
+                return
+            }
+            self.tapGesture?.delegate = self
+            self.view.addGestureRecognizer(tapGesture)
 
-        self.view.addGestureRecognizer(dragTapGesture)
+        }
+        /// if user can drag to dismiss and present
+        if self.interactivePresentationAndDismissal {
+            self.dragTapGesture = UIPanGestureRecognizer(target: self, action: #selector(handleDragGesture))
+            self.dragTapGesture?.minimumNumberOfTouches = 1
+            guard let dragTapGesture = self.dragTapGesture else {
+                return
+            }
+            self.dragTapGesture?.delegate = self
+            
+            self.view.addGestureRecognizer(dragTapGesture)
 
+        }
     }
     
     /**
