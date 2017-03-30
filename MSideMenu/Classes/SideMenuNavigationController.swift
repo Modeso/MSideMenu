@@ -34,14 +34,11 @@ open class SideMenuNavigationController: UINavigationController {
     /// The amount of translation in X direction, Value 0.0 will stay in the middle of the screen
     @IBInspectable open var xTranslation: CGFloat  = 0.5
     
-    
     /// The amount of translation in Y direction, Default is 0.0 and it will stay in the middle of the screen
     @IBInspectable open var yTranslation: CGFloat  = 0.0
     
-    
     /// The amount of opacity of the content view controller.
     @IBInspectable open var contentViewControllerOpacity: CGFloat = 1.0
-    
     
     /// Handle if tapping in the animated content view controller should dismiss the side menu or not
     @IBInspectable open var shouldDismissOnTappingContentVC: Bool  = true
@@ -52,18 +49,14 @@ open class SideMenuNavigationController: UINavigationController {
     /// Handle if the content view controller will have shadow or not
     @IBInspectable open var contentViewHasShadow: Bool = true
     
-    
     /// Color of the shadow of the content view controller
     @IBInspectable open var contentViewShadowColor: UIColor = UIColor.black
-    
     
     /// Offset of the shadow of the content view controller
     @IBInspectable open var contentViewShadowOffset: CGSize = .zero
     
-    
     /// Opacity of the shadow of the content view controller
     @IBInspectable open var contentViewShadowOpacity: Float = 1.0
-    
     
     /// Radius of the shadow of the content view controller
     @IBInspectable open var contentViewShadowRadius: Float = 10.0
@@ -71,21 +64,20 @@ open class SideMenuNavigationController: UINavigationController {
     /// Value for the Spring with Damping for Presentation animation
     @IBInspectable open var presentationAnimationSpringWithDamping: Float = 0.5
     
-    
     /// Value for the Initial Spring Velocity for presentation Animation
     @IBInspectable open var presentationAnimationInitialSpringVelocity: Float = 0.5
-    
     
     /// Value for the Spring with Damping for Dismissal animation
     @IBInspectable open var dismissAnimationSpringWithDamping: Float = 1.0
     
-    
     /// Value for the Initial Spring Velocity for Dismissal Animation
     @IBInspectable open var dismissAnimationInitialSpringVelocity: Float = 1.0
 
-    
-    /// Side Menu View Controller
-    open var sideMenuViewController: UIViewController?
+    /// Left Side Menu View Controller
+    open var leftSideMenuViewController: UIViewController?
+
+    /// Right Side Menu View Controller
+    open var rightSideMenuViewController: UIViewController?
 
     /// Interactor object to handle dragging the side menu when presenting and dismissing it
     let interactor = Interactor()
@@ -106,7 +98,7 @@ open class SideMenuNavigationController: UINavigationController {
     override open func viewDidLoad() {
         super.viewDidLoad()
         
-        self.sideMenuViewController?.transitioningDelegate = transitionDelegate
+        self.leftSideMenuViewController?.transitioningDelegate = transitionDelegate
         transitionDelegate.interactor = self.interactor
         
         self.delegate = self

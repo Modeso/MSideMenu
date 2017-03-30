@@ -25,7 +25,7 @@ extension SideMenuNavigationController {
             // present the left side menu...
             self.tapGesture?.isEnabled = self.shouldDismissOnTappingContentVC
             // add gesture for the visible view controller
-            guard let sideMenuVC = self.sideMenuViewController else {
+            guard let sideMenuVC = self.leftSideMenuViewController else {
                 return
             }
             self.present(sideMenuVC, animated: true, completion: nil)
@@ -74,7 +74,7 @@ extension SideMenuNavigationController {
             interactor.shouldFinish = progress > percentThreshold
             if !isDismissing {
                 /// to handle moving right by finger, not left
-                if let sideMenuVC = self.sideMenuViewController, horizontalMovement > 0, !interactor.hasStarted {
+                if let sideMenuVC = self.leftSideMenuViewController, horizontalMovement > 0, !interactor.hasStarted {
                     interactor.hasStarted = true
                     self.present(sideMenuVC, animated: true, completion: nil)
                 }

@@ -17,7 +17,7 @@ class FirstViewController: UIViewController {
         guard let sideMenuNavController = self.navigationController as? SideMenuNavigationController else {
             return
         }
-        sideMenuNavController.sideMenuViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "leftSideViewController")
+        sideMenuNavController.leftSideMenuViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "leftSideViewController")
     }
 
     override func viewDidLoad() {
