@@ -89,6 +89,24 @@
             </objects>
             <point key="canvasLocation" x="2052" y="-63.418290854572717"/>
         </scene>
+        <!--View Controller-->
+        <scene sceneID="LzW-ab-Yss">
+            <objects>
+                <viewController storyboardIdentifier="rightSideViewController" id="1zN-bT-Mtz" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="wdW-Ug-Q59"/>
+                        <viewControllerLayoutGuide type="bottom" id="WVy-Vu-iIF"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="7KV-XU-LR6">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="0.43921568630000002" green="0.81960784310000001" blue="0.34901960780000002" alpha="1" colorSpace="calibratedRGB"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dVF-e1-1xO" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2498" y="-681"/>
+        </scene>
         <!--Second View Controller-->
         <scene sceneID="aEl-Ky-Rr6">
             <objects>
@@ -143,6 +161,9 @@
                         <userDefinedRuntimeAttribute type="number" keyPath="presentationAnimationInitialSpringVelocity">
                             <real key="value" value="1"/>
                         </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="image" keyPath="leftSideMenuImage" value="menu"/>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="interactivePresentationAndDismissal" value="YES"/>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="shouldDismissOnTappingContentVC" value="YES"/>
                     </userDefinedRuntimeAttributes>
                     <connections>
                         <segue destination="vXZ-lx-hvc" kind="relationship" relationship="rootViewController" id="cny-Jx-dY2"/>

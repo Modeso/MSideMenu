@@ -12,13 +12,13 @@ import UIKit
     SideMenuTransitionsManager:
         - Custom TransitioningDelegate object to handle present/dismiss for the side menu navigation.
  */
-
 class SideMenuTransitionsManager: NSObject, UIViewControllerTransitioningDelegate {
 
     var interactor: Interactor?
+    var direction: AnimationDirection = .left
     /// should return the presentation animator object
     func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return SideMenuPresentationAnimator()
+        return SideMenuPresentationAnimator(self.direction)
     }
     
     /// should return the dismissal animator object
@@ -45,6 +45,11 @@ class SideMenuTransitionsManager: NSObject, UIViewControllerTransitioningDelegat
     Transition Enum
     - Enumerator to present the interaction types like dismissing and presenting.
  */
+
+enum AnimationDirection: Int {
+    case left = -1
+    case right = 1
+}
 
 enum Transition: Int {
     case presenting
@@ -74,6 +79,12 @@ class Interactor: UIPercentDrivenInteractiveTransition {
  */
 
 fileprivate class SideMenuPresentationAnimator: NSObject, UIViewControllerAnimatedTransitioning {
+    let direction: AnimationDirection
+    
+    /// custom init
+    init(_ direction: AnimationDirection) {
+        self.direction = direction
+    }
 
     /// set the presentation animation duration
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
@@ -131,7 +142,7 @@ fileprivate class SideMenuPresentationAnimator: NSObject, UIViewControllerAnimat
                         /// scale to the required scale then translate the view...
                         fromViewController.view.transform  = CGAffineTransform(scaleX: fromViewController.contentViewControllerScale,
                                                                                y: fromViewController.contentViewControllerScale)
-                            .translatedBy(x: bounds.size.width * fromViewController.xTranslation,
+                            .translatedBy(x: bounds.size.width * fromViewController.xTranslation * CGFloat(self.direction.rawValue),
                                           y: bounds.size.height * fromViewController.yTranslation)
                         
                         snapshot?.transform  = fromViewController.view.transform
@@ -157,6 +168,7 @@ fileprivate class SideMenuPresentationAnimator: NSObject, UIViewControllerAnimat
  */
 
 fileprivate class SideMenuDismissalAnimator: NSObject, UIViewControllerAnimatedTransitioning {
+
 
     /// set the dismiss animation duration
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {

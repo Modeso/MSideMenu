@@ -18,6 +18,8 @@ class FirstViewController: UIViewController {
             return
         }
         sideMenuNavController.leftSideMenuViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "leftSideViewController")
+        sideMenuNavController.rightSideMenuViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "rightSideViewController")
+
     }
 
     override func viewDidLoad() {

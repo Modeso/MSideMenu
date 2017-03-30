@@ -15,10 +15,10 @@ import Foundation
 extension SideMenuNavigationController {
     
     /**
-        This method is used to handle clicking on the menu button in the navigation controller.
+        This method is used to handle clicking on the left menu button in the navigation controller.
         It checks if the side menu is presented, then close the side menu, and if it's not presented, persent the side menu with the custom transition
      */
-    func didTapSideMenu() {
+    func didTapLeftSideMenu() {
         
         guard let _  = self.presentedViewController else {
             
@@ -36,6 +36,24 @@ extension SideMenuNavigationController {
         self.closeSideMenu()
     }
     
+    func didTapRightSideMenu() {
+        
+        guard let _  = self.presentedViewController else {
+            
+            // present the left side menu...
+            self.tapGesture?.isEnabled = self.shouldDismissOnTappingContentVC
+            // add gesture for the visible view controller
+            guard let sideMenuVC = self.rightSideMenuViewController else {
+                return
+            }
+            self.present(sideMenuVC, animated: true, completion: nil)
+            
+            
+            return
+        }
+        self.closeSideMenu()
+    }
+
     /**
         This method is used to handle dragging the view controller to present or dismiss.
      */
