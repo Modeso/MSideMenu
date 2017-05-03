@@ -129,6 +129,7 @@ open class SideMenuNavigationController: UINavigationController {
                 return
             }
             self.tapGesture?.delegate = self
+            self.tapGesture?.isEnabled = false
             self.view.addGestureRecognizer(tapGesture)
 
         }
@@ -158,7 +159,8 @@ open class SideMenuNavigationController: UINavigationController {
             return
         }
 
-        viewController.navigationItem.leftBarButtonItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(didTapSideMenu))
+        let img = image.withRenderingMode(.alwaysOriginal)
+        viewController.navigationItem.leftBarButtonItem = UIBarButtonItem(image: img, style: .plain, target: self, action: #selector(didTapSideMenu))
     }
     
 
