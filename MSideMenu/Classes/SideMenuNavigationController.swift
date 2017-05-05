@@ -16,9 +16,12 @@ import UIKit
  */
 open class SideMenuNavigationController: UINavigationController {
 
-    /// The side menu Image
-    @IBInspectable open var sideMenuImage: UIImage?
+    /// The left side menu button Image
+    @IBInspectable open var leftSideMenuImage: UIImage?
     
+    /// The right side menu button Image
+    @IBInspectable open var rightSideMenuImage: UIImage?
+
     /// Duration of the animation that the menu needs to be presented. Default is 0.35 seconds.
     @IBInspectable open var presentationDuration: Double  = 0.35
     
@@ -84,8 +87,11 @@ open class SideMenuNavigationController: UINavigationController {
     @IBInspectable open var dismissAnimationInitialSpringVelocity: Float = 1.0
 
     
-    /// Side Menu View Controller
-    open var sideMenuViewController: UIViewController?
+    /// Left Side Menu View Controller
+    open var leftSideMenuViewController: UIViewController?
+
+    /// Right Side Menu View Controller
+    open var rightSideMenuViewController: UIViewController?
 
     /// Interactor object to handle dragging the side menu when presenting and dismissing it
     let interactor = Interactor()
@@ -106,7 +112,9 @@ open class SideMenuNavigationController: UINavigationController {
     override open func viewDidLoad() {
         super.viewDidLoad()
         
-        self.sideMenuViewController?.transitioningDelegate = transitionDelegate
+        self.leftSideMenuViewController?.transitioningDelegate = transitionDelegate
+        self.rightSideMenuViewController?.transitioningDelegate = transitionDelegate
+
         transitionDelegate.interactor = self.interactor
         
         self.delegate = self
@@ -123,7 +131,7 @@ open class SideMenuNavigationController: UINavigationController {
         /// if user can tap to dismiss
         if self.shouldDismissOnTappingContentVC {
             
-            self.tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapSideMenu))
+            self.tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapLeftSideMenu))
             self.tapGesture?.numberOfTapsRequired = 1
             guard let tapGesture = self.tapGesture else {
                 return
@@ -148,19 +156,28 @@ open class SideMenuNavigationController: UINavigationController {
     }
     
     /**
-        This method is used to setup left bar button to be used as side menu button, if no image provided, Menu title will be used
+        This method is used to setup left bar button and right bar button to be used as side menu button, if no image provided, Menu title will be used
         - Parameter viewController:  The view controller that will have the side menu button
      */
 
     fileprivate func setupSideMenuBarButton(_ viewController: UIViewController) {
 
-        guard let image = self.sideMenuImage else {
-            viewController.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Menu", style: .plain, target: self, action: #selector(didTapSideMenu))
-            return
+        // setup left image
+        if let image = self.leftSideMenuImage?.withRenderingMode(.alwaysOriginal) {
+            viewController.navigationItem.leftBarButtonItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(didTapLeftSideMenu))
+            
+        }else if let _ = self.leftSideMenuViewController {
+            viewController.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Menu", style: .plain, target: self, action: #selector(didTapLeftSideMenu))
+        }
+        
+        // setup right image
+        if let image = self.rightSideMenuImage?.withRenderingMode(.alwaysOriginal) {
+            viewController.navigationItem.leftBarButtonItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(didTapRightSideMenu))
+            
+        }else if let _ = self.rightSideMenuViewController {
+            viewController.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Menu", style: .plain, target: self, action: #selector(didTapRightSideMenu))
         }
 
-        let img = image.withRenderingMode(.alwaysOriginal)
-        viewController.navigationItem.leftBarButtonItem = UIBarButtonItem(image: img, style: .plain, target: self, action: #selector(didTapSideMenu))
     }
     
 

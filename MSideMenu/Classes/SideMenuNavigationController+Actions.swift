@@ -47,8 +47,7 @@ extension SideMenuNavigationController {
                 return
             }
             self.present(sideMenuVC, animated: true, completion: nil)
-            
-            
+
             return
         }
         self.closeSideMenu()

@@ -16,6 +16,7 @@ class SideMenuTransitionsManager: NSObject, UIViewControllerTransitioningDelegat
 
     var interactor: Interactor?
     var direction: AnimationDirection = .left
+
     /// should return the presentation animator object
     func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return SideMenuPresentationAnimator(self.direction)
