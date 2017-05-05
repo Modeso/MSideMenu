@@ -2,7 +2,7 @@
 //  SideMenuNavigationController.swift
 //  Pods
 //
-//  Created by Esraa on 3/27/17.
+//  Created by Esraa Apady on 3/27/17.
 //
 //
 
@@ -22,18 +22,23 @@ open class SideMenuNavigationController: UINavigationController {
     /// The right side menu button Image
     @IBInspectable open var rightSideMenuImage: UIImage?
 
+    
     /// Duration of the animation that the menu needs to be presented. Default is 0.35 seconds.
     @IBInspectable open var presentationDuration: Double  = 0.35
+    
     
     /// Duration of the animation that the menu needs to be dismissed. Default is 0.35 seconds.
     @IBInspectable open var dismissDuration: Double  = 0.35
     
+    
     /// The scale of the content view controller
     @IBInspectable open var contentViewControllerScale: CGFloat = 0.5
+    
     
     /// Value for the scale of the left side menu while dismissing and presenting
     @IBInspectable open var leftSideMenuViewControllerScale: Float = 1.2
 
+    
     /// The amount of translation in X direction, Value 0.0 will stay in the middle of the screen
     @IBInspectable open var xTranslation: CGFloat  = 0.5
     
@@ -49,8 +54,10 @@ open class SideMenuNavigationController: UINavigationController {
     /// Handle if tapping in the animated content view controller should dismiss the side menu or not
     @IBInspectable open var shouldDismissOnTappingContentVC: Bool  = true
     
+    
     /// Handle if user can drag to present or dismiss
     @IBInspectable open var interactivePresentationAndDismissal: Bool  = false
+    
     
     /// Handle if the content view controller will have shadow or not
     @IBInspectable open var contentViewHasShadow: Bool = true
@@ -116,7 +123,6 @@ open class SideMenuNavigationController: UINavigationController {
         self.rightSideMenuViewController?.transitioningDelegate = transitionDelegate
 
         transitionDelegate.interactor = self.interactor
-        
         self.delegate = self
         self.setupGestureRecognizer()
     }
@@ -182,6 +188,7 @@ open class SideMenuNavigationController: UINavigationController {
     
 
 }
+
 // MARK: - UIGestureRecognizerDelegate
 
 extension SideMenuNavigationController: UIGestureRecognizerDelegate {

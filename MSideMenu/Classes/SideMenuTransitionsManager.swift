@@ -2,7 +2,7 @@
 //  SideMenuTransitionsManager.swift
 //  Pods
 //
-//  Created by Esraa on 3/27/17.
+//  Created by Esraa Apady on 3/27/17.
 //
 //
 
@@ -26,6 +26,8 @@ class SideMenuTransitionsManager: NSObject, UIViewControllerTransitioningDelegat
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return SideMenuDismissalAnimator()
     }
+    
+    /// should return the intercative presentation animator object
     func interactionControllerForPresentation(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
         guard let interactor = self.interactor else {
             return nil
@@ -33,6 +35,7 @@ class SideMenuTransitionsManager: NSObject, UIViewControllerTransitioningDelegat
         return interactor.hasStarted ? interactor : nil
 
     }
+    
     /// should return the intercative dismissal animator object
     func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
         guard let interactor = self.interactor else {
@@ -42,16 +45,20 @@ class SideMenuTransitionsManager: NSObject, UIViewControllerTransitioningDelegat
     }
 }
 
+
+/**
+    AnimationDirection
+    - Enumerator to present the animation of left side or right side.
+ */
+enum AnimationDirection: Int {
+    case left = 1
+    case right = -1
+}
+
 /**
     Transition Enum
     - Enumerator to present the interaction types like dismissing and presenting.
  */
-
-enum AnimationDirection: Int {
-    case left = -1
-    case right = 1
-}
-
 enum Transition: Int {
     case presenting
     case dismissing
@@ -196,6 +203,7 @@ fileprivate class SideMenuDismissalAnimator: NSObject, UIViewControllerAnimatedT
                        initialSpringVelocity: CGFloat(toViewController.dismissAnimationInitialSpringVelocity),
                        options: .curveEaseInOut,
                        animations: {
+                        
             /// container animation
             toViewController.view.alpha = 1.0
             toViewController.view.transform  = CGAffineTransform.identity.translatedBy(x:0, y: 0)

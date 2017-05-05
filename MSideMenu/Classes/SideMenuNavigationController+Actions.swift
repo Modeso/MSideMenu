@@ -2,7 +2,7 @@
 //  SideMenuNavigationController+Actions.swift
 //  Pods
 //
-//  Created by Esraa on 3/28/17.
+//  Created by Esraa Apady on 3/28/17.
 //
 //
 
@@ -28,14 +28,19 @@ extension SideMenuNavigationController {
             guard let sideMenuVC = self.leftSideMenuViewController else {
                 return
             }
+            transitionDelegate.direction = .left
             self.present(sideMenuVC, animated: true, completion: nil)
-            
             
             return
         }
         self.closeSideMenu()
     }
     
+    /**
+        This method is used to handle clicking on the right menu button in the navigation controller.
+        It checks if the side menu is presented, then close the side menu, and if it's not presented, persent the side menu with the custom transition
+     */
+
     func didTapRightSideMenu() {
         
         guard let _  = self.presentedViewController else {
@@ -46,6 +51,7 @@ extension SideMenuNavigationController {
             guard let sideMenuVC = self.rightSideMenuViewController else {
                 return
             }
+            transitionDelegate.direction = .right
             self.present(sideMenuVC, animated: true, completion: nil)
 
             return
@@ -71,48 +77,115 @@ extension SideMenuNavigationController {
         /// get translaion in x-direction
         let translation = sender.translation(in: view)
         
-        /// calculate the horizntal movement.
-        var horizontalMovement = isDismissing ? Double(-1 * translation.x) : Double(translation.x)
-        horizontalMovement = horizontalMovement / Double(view.bounds.width)
-        let movement = fmaxf(Float(horizontalMovement), 0.0)
-        let movementPercent = fminf(movement, 1.0)
-        let progress = CGFloat(movementPercent) * 1
-        switch sender.state {
-            
-        case .began:
-    
-            if isDismissing {
-                interactor.hasStarted = true
-                dismiss(animated: true, completion: nil)
-            }
+        print("isDismissing \(isDismissing) translation \(translation.x)")
         
-        case .changed:
+
+        if !isDismissing && translation.x < 0  || isDismissing && translation.x > 0 {
+            // 
+            if isDismissing && self.presentedViewController == self.leftSideMenuViewController {
+                return
+            }
+            // handle right side
+            transitionDelegate.direction = .right
+            var horizontalMovement = isDismissing ? Double(-1 * abs(translation.x)) : Double(abs(translation.x))
+            horizontalMovement = horizontalMovement / Double(view.bounds.width)
             
-            interactor.shouldFinish = progress > percentThreshold
-            if !isDismissing {
-                /// to handle moving right by finger, not left
-                if let sideMenuVC = self.leftSideMenuViewController, horizontalMovement > 0, !interactor.hasStarted {
+            let movement = fmaxf(Float(abs(horizontalMovement)), 0.0)
+            let movementPercent = fminf(movement, 1.0)
+            let progress = CGFloat(movementPercent) * 0.5
+
+
+            
+            switch sender.state {
+                
+            case .began:
+                
+                if isDismissing {
                     interactor.hasStarted = true
-                    self.present(sideMenuVC, animated: true, completion: nil)
+                    dismiss(animated: true, completion: nil)
                 }
-            }
-            if horizontalMovement > 0 {
+                
+            case .changed:
+                
+                interactor.shouldFinish = progress > percentThreshold
+                if !isDismissing {
+                    /// to handle moving right by finger, not left
+                    if let sideMenuVC = self.rightSideMenuViewController, horizontalMovement > 0, !interactor.hasStarted {
+                        interactor.hasStarted = true
+                        self.present(sideMenuVC, animated: true, completion: nil)
+                    }
+                }
+                
                 interactor.update(progress)
+                
+            case .cancelled:
+                
+                interactor.hasStarted = false
+                interactor.cancel()
+                
+            case .ended:
+                
+                interactor.hasStarted = false
+                interactor.currentTransitionType = .none
+                interactor.shouldFinish ?  interactor.finish() : interactor.cancel()
+                tapGesture?.isEnabled = self.presentedViewController != nil;
+                
+            default:
+                break
             }
+
+        }else {
+            // handle left side
+            /// calculate the horizontal movement.
+            transitionDelegate.direction = .left
+
+            var horizontalMovement = isDismissing ? Double(-1 * translation.x) : Double(translation.x)
+            horizontalMovement = horizontalMovement / Double(view.bounds.width)
             
-        case .cancelled:
+            let movement = fmaxf(Float(horizontalMovement), 0.0)
+            let movementPercent = fminf(movement, 1.0)
+            let progress = CGFloat(movementPercent) * 0.5
             
-            interactor.hasStarted = false
-            interactor.cancel()
-            
-        case .ended:
-            
-            interactor.hasStarted = false
-            interactor.currentTransitionType = .none
-            interactor.shouldFinish ?  interactor.finish() : interactor.cancel()
-            
-        default:
-            break
+
+            switch sender.state {
+                
+            case .began:
+                
+                if isDismissing {
+                    interactor.hasStarted = true
+                    dismiss(animated: true, completion: nil)
+                }
+                
+            case .changed:
+                
+                interactor.shouldFinish = progress > percentThreshold
+                if !isDismissing {
+                    /// to handle moving right by finger, not left
+                    if let sideMenuVC = self.leftSideMenuViewController, horizontalMovement > 0, !interactor.hasStarted {
+                        interactor.hasStarted = true
+                        self.present(sideMenuVC, animated: true, completion: nil)
+                    }
+                }
+                if horizontalMovement > 0 {
+                    interactor.update(progress)
+                }
+                
+            case .cancelled:
+                
+                interactor.hasStarted = false
+                interactor.cancel()
+                
+            case .ended:
+                
+                interactor.hasStarted = false
+                interactor.currentTransitionType = .none
+                interactor.shouldFinish ?  interactor.finish() : interactor.cancel()
+                tapGesture?.isEnabled = self.presentedViewController != nil;
+                
+            default:
+                break
+            }
+
         }
     }
     

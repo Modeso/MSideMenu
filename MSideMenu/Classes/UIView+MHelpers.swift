@@ -2,14 +2,14 @@
 //  UIView+MHelpers.swift
 //  Pods
 //
-//  Created by Esraa on 3/28/17.
+//  Created by Esraa Apady on 3/28/17.
 //
 //
 
 import Foundation
-/*
- * Helper to add UIView related helper method
-**/
+/**
+    Helper to add UIView related helper method
+*/
 extension UIView {
     
     func applyShadow(_ color: UIColor, offset: CGSize, opacity: Float, radius: CGFloat) {
