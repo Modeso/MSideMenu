@@ -53,6 +53,7 @@ class SideMenuTransitionsManager: NSObject, UIViewControllerTransitioningDelegat
 enum AnimationDirection: Int {
     case left = 1
     case right = -1
+    case none = 0
 }
 
 /**
@@ -79,6 +80,10 @@ class Interactor: UIPercentDrivenInteractiveTransition {
     
     /// hold the current transition type
     var currentTransitionType: Transition = .none
+    
+    /// hold the direction of interactive animation transition
+    var direction: AnimationDirection = .left
+
 }
 
 /**

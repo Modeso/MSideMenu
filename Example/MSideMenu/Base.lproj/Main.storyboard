@@ -147,10 +147,10 @@
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="image" keyPath="sideMenuImage" value="menu"/>
                         <userDefinedRuntimeAttribute type="number" keyPath="presentationDuration">
-                            <real key="value" value="0.5"/>
+                            <integer key="value" value="1"/>
                         </userDefinedRuntimeAttribute>
                         <userDefinedRuntimeAttribute type="number" keyPath="dismissDuration">
-                            <real key="value" value="0.5"/>
+                            <integer key="value" value="1"/>
                         </userDefinedRuntimeAttribute>
                         <userDefinedRuntimeAttribute type="number" keyPath="presentationAnimationSpringWithDamping">
                             <real key="value" value="1"/>

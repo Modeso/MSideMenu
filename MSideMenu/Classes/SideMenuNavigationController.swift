@@ -112,7 +112,7 @@ open class SideMenuNavigationController: UINavigationController {
     var tapGesture: UITapGestureRecognizer?
 
     /// tapGesture: gesture recognizer to handle dismissing the menu on dragging.
-    var dragTapGesture: UIPanGestureRecognizer?
+    var dragGesture: UIPanGestureRecognizer?
 
     // MARK: - Init
     
@@ -149,12 +149,12 @@ open class SideMenuNavigationController: UINavigationController {
         }
         /// if user can drag to dismiss and present
         if self.interactivePresentationAndDismissal {
-            self.dragTapGesture = UIPanGestureRecognizer(target: self, action: #selector(handleDragGesture))
-            self.dragTapGesture?.minimumNumberOfTouches = 1
-            guard let dragTapGesture = self.dragTapGesture else {
+            self.dragGesture = UIPanGestureRecognizer(target: self, action: #selector(handleDragGesture))
+            self.dragGesture?.minimumNumberOfTouches = 0
+            guard let dragTapGesture = self.dragGesture else {
                 return
             }
-            self.dragTapGesture?.delegate = self
+            self.dragGesture?.delegate = self
             
             self.view.addGestureRecognizer(dragTapGesture)
 
@@ -169,7 +169,7 @@ open class SideMenuNavigationController: UINavigationController {
     fileprivate func setupSideMenuBarButton(_ viewController: UIViewController) {
 
         // setup left image
-        if let image = self.leftSideMenuImage?.withRenderingMode(.alwaysOriginal) {
+        if let image = self.leftSideMenuImage {
             viewController.navigationItem.leftBarButtonItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(didTapLeftSideMenu))
             
         }else if let _ = self.leftSideMenuViewController {
@@ -177,7 +177,7 @@ open class SideMenuNavigationController: UINavigationController {
         }
         
         // setup right image
-        if let image = self.rightSideMenuImage?.withRenderingMode(.alwaysOriginal) {
+        if let image = self.rightSideMenuImage {
             viewController.navigationItem.leftBarButtonItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(didTapRightSideMenu))
             
         }else if let _ = self.rightSideMenuViewController {
@@ -195,6 +195,7 @@ extension SideMenuNavigationController: UIGestureRecognizerDelegate {
     public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
+    
 }
 
 // MARK: - UINavigationControllerDelegate
