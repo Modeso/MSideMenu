@@ -139,8 +139,8 @@ fileprivate class SideMenuPresentationAnimator: NSObject, UIViewControllerAnimat
             snapshot?.applyShadow(fromViewController.contentViewShadowColor, offset: fromViewController.contentViewShadowOffset, opacity: fromViewController.contentViewShadowOpacity, radius: CGFloat(fromViewController.contentViewShadowRadius))
         }
 
-        toViewController.view.transform  = CGAffineTransform(scaleX: CGFloat(fromViewController.leftSideMenuViewControllerScale),
-                                                               y: CGFloat(fromViewController.leftSideMenuViewControllerScale))
+        toViewController.view.transform  = CGAffineTransform(scaleX: CGFloat(fromViewController.sideMenuViewControllerScale),
+                                                               y: CGFloat(fromViewController.sideMenuViewControllerScale))
 
         UIView.animate(withDuration: animationDuration,
                        delay: 0.0,
@@ -213,8 +213,8 @@ fileprivate class SideMenuDismissalAnimator: NSObject, UIViewControllerAnimatedT
             toViewController.view.alpha = 1.0
             toViewController.view.transform  = CGAffineTransform.identity.translatedBy(x:0, y: 0)
             /// left side menu animation
-            fromViewController.view.transform  = CGAffineTransform(scaleX: CGFloat(toViewController.leftSideMenuViewControllerScale),
-                                                                               y: CGFloat(toViewController.leftSideMenuViewControllerScale))
+            fromViewController.view.transform  = CGAffineTransform(scaleX: CGFloat(toViewController.sideMenuViewControllerScale),
+                                                                               y: CGFloat(toViewController.sideMenuViewControllerScale))
 
         }, completion: { (finished: Bool) -> Void in
         
