@@ -60,7 +60,7 @@ extension SideMenuNavigationController {
     }
     
     /**
-        This method is used to handle dragging the view controller to present or dismiss.
+     This method is used to handle dragging the view controller to present or dismiss.
      */
     @objc func handleDragGesture(sender: UIPanGestureRecognizer) {
         
@@ -74,21 +74,21 @@ extension SideMenuNavigationController {
         isDismissing = interactor.currentTransitionType == .dismissing
         
         let percentThreshold:CGFloat = isDismissing ? 0.2 : 0.1
-
+        
         /// get translaion in x-direction
         let translation = sender.translation(in: view)
         
-
+        
         var horizontalMovement = 0.0
         var movement: Float = 0.0
         var toPresent: UIViewController?
-
+        
         if ((!isDismissing && translation.x < 0 && interactor.direction != .left) || isDismissing && translation.x > 0)  {
             
             // handle right side
             interactor.direction = .right
             transitionDelegate.direction = .right
-
+            
             horizontalMovement = isDismissing ? Double(-1 * abs(translation.x)) : Double(abs(translation.x))
             horizontalMovement = horizontalMovement / Double(view.bounds.width)
             
@@ -97,7 +97,7 @@ extension SideMenuNavigationController {
             
         }else if interactor.direction != .right {
             // handle left side
-
+            
             interactor.direction = .left
             transitionDelegate.direction = .left
             
@@ -105,7 +105,7 @@ extension SideMenuNavigationController {
             horizontalMovement = horizontalMovement / Double(view.bounds.width)
             movement = fmaxf(Float(horizontalMovement), 0.0)
             toPresent = self.leftSideMenuViewController
-
+            
         }
         let movementPercent = fminf(movement, 1.0)
         let progress = CGFloat(movementPercent) * 0.5
@@ -136,7 +136,7 @@ extension SideMenuNavigationController {
             interactor.hasStarted = false
             interactor.cancel()
             interactor.direction = .none
-
+            
         case .ended:
             
             interactor.hasStarted = false
@@ -144,7 +144,7 @@ extension SideMenuNavigationController {
             interactor.shouldFinish ?  interactor.finish() : interactor.cancel()
             tapGesture?.isEnabled = self.presentedViewController != nil;
             interactor.direction = .none
-
+            
         default:
             break
         }

@@ -9,18 +9,26 @@
 import UIKit
 
 /**
-    SideMenuNavigationController:
-        - The Navigation Controller of the Side Menu.
-    How to use:
-        - Just use this navigation controller as entery point and it should has a root view controller, and specify the sideMenuViewController.
+ SideMenuNavigationController:
+ - The Navigation Controller of the Side Menu.
+ How to use:
+ - Just use this navigation controller as entery point and it should has a root view controller, and specify the sideMenuViewController.
  */
 open class SideMenuNavigationController: UINavigationController {
-
+    
     /// The left side menu button Image
-    @IBInspectable open var leftSideMenuImage: UIImage?
+    @IBInspectable open var leftSideMenuImage: UIImage? {
+        didSet {
+            self.setupSideMenuBarButton()
+        }
+    }
     
     /// The right side menu button Image
-    @IBInspectable open var rightSideMenuImage: UIImage?
+    @IBInspectable open var rightSideMenuImage: UIImage? {
+        didSet {
+            self.setupSideMenuBarButton()
+        }
+    }
 
     
     /// Duration of the animation that the menu needs to be presented. Default is 0.35 seconds.
@@ -37,7 +45,7 @@ open class SideMenuNavigationController: UINavigationController {
     
     /// Value for the scale of the left side menu while dismissing and presenting
     @IBInspectable open var sideMenuViewControllerScale: Float = 1.2
-
+    
     
     /// The amount of translation in X direction, Value 0.0 will stay in the middle of the screen
     @IBInspectable open var xTranslation: CGFloat  = 0.5
@@ -92,46 +100,51 @@ open class SideMenuNavigationController: UINavigationController {
     
     /// Value for the Initial Spring Velocity for Dismissal Animation
     @IBInspectable open var dismissAnimationInitialSpringVelocity: Float = 1.0
-
+    
     
     /// Left Side Menu View Controller
-    open var leftSideMenuViewController: UIViewController?
-
+    open var leftSideMenuViewController: UIViewController? {
+        didSet {
+            leftSideMenuViewController?.transitioningDelegate = transitionDelegate
+        }
+    }
+    
     /// Right Side Menu View Controller
-    open var rightSideMenuViewController: UIViewController?
-
+    open var rightSideMenuViewController: UIViewController? {
+        didSet {
+            rightSideMenuViewController?.transitioningDelegate = transitionDelegate
+        }
+    }
+    
     /// Interactor object to handle dragging the side menu when presenting and dismissing it
     let interactor = Interactor()
-
+    
     // MARK: - Private Properties
-
+    
     /// transitionDelegate: Custom transition manager to mange the custom Modal transition for the side menu.
     let transitionDelegate: SideMenuTransitionsManager = SideMenuTransitionsManager()
     
     /// tapGesture: gesture recognizer to handle dismissing the menu on Clicking on the content view controller.
     var tapGesture: UITapGestureRecognizer?
-
+    
     /// tapGesture: gesture recognizer to handle dismissing the menu on dragging.
     var dragGesture: UIPanGestureRecognizer?
-
+    
     // MARK: - Init
     
     override open func viewDidLoad() {
         super.viewDidLoad()
         
-        self.leftSideMenuViewController?.transitioningDelegate = transitionDelegate
-        self.rightSideMenuViewController?.transitioningDelegate = transitionDelegate
-
         transitionDelegate.interactor = self.interactor
         self.delegate = self
         self.setupGestureRecognizer()
     }
     
-
+    
     // MARK: - Private Helper functions
-
+    
     /**
-        This method is used to setup the gesture recognizer that will be used to dismiss the menu on tapping on the content view controller.
+     This method is used to setup the gesture recognizer that will be used to dismiss the menu on tapping on the content view controller.
      */
     fileprivate func setupGestureRecognizer() {
         /// if user can tap to dismiss
@@ -145,7 +158,7 @@ open class SideMenuNavigationController: UINavigationController {
             self.tapGesture?.delegate = self
             self.tapGesture?.isEnabled = false
             self.view.addGestureRecognizer(tapGesture)
-
+            
         }
         /// if user can drag to dismiss and present
         if self.interactivePresentationAndDismissal {
@@ -157,36 +170,37 @@ open class SideMenuNavigationController: UINavigationController {
             self.dragGesture?.delegate = self
             
             self.view.addGestureRecognizer(dragTapGesture)
-
+            
         }
     }
     
     /**
-        This method is used to setup left bar button and right bar button to be used as side menu button, if no image provided, Menu title will be used
-        - Parameter viewController:  The view controller that will have the side menu button
+     This method is used to setup left bar button and right bar button to be used as side menu button, if no image provided, Menu title will be used
+     - Parameter viewController:  The view controller that will have the side menu button
      */
-
-    fileprivate func setupSideMenuBarButton(_ viewController: UIViewController) {
-
+    
+    fileprivate func setupSideMenuBarButton(_ viewController: UIViewController? = nil) {
+        
+        let viewController = viewController ?? self.visibleViewController
         // setup left image
         if let image = self.leftSideMenuImage {
-            viewController.navigationItem.leftBarButtonItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(didTapLeftSideMenu))
+            viewController?.navigationItem.leftBarButtonItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(didTapLeftSideMenu))
             
         }else if let _ = self.leftSideMenuViewController {
-            viewController.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Menu", style: .plain, target: self, action: #selector(didTapLeftSideMenu))
+            viewController?.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Menu", style: .plain, target: self, action: #selector(didTapLeftSideMenu))
         }
         
         // setup right image
         if let image = self.rightSideMenuImage {
-            viewController.navigationItem.leftBarButtonItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(didTapRightSideMenu))
+            viewController?.navigationItem.leftBarButtonItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(didTapRightSideMenu))
             
         }else if let _ = self.rightSideMenuViewController {
-            viewController.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Menu", style: .plain, target: self, action: #selector(didTapRightSideMenu))
+            viewController?.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Menu", style: .plain, target: self, action: #selector(didTapRightSideMenu))
         }
-
+        
     }
     
-
+    
 }
 
 // MARK: - UIGestureRecognizerDelegate
@@ -200,8 +214,8 @@ extension SideMenuNavigationController: UIGestureRecognizerDelegate {
 
 // MARK: - UINavigationControllerDelegate
 extension SideMenuNavigationController: UINavigationControllerDelegate {
-
-    public func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
+    
+    open func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
         /// set the menu as left bar button
         self.setupSideMenuBarButton(viewController)
     }

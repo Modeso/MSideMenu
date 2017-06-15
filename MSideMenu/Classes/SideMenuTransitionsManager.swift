@@ -9,14 +9,14 @@
 import UIKit
 
 /**
-    SideMenuTransitionsManager:
-        - Custom TransitioningDelegate object to handle present/dismiss for the side menu navigation.
+ SideMenuTransitionsManager:
+ - Custom TransitioningDelegate object to handle present/dismiss for the side menu navigation.
  */
 class SideMenuTransitionsManager: NSObject, UIViewControllerTransitioningDelegate {
-
+    
     var interactor: Interactor?
     var direction: AnimationDirection = .left
-
+    
     /// should return the presentation animator object
     func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return SideMenuPresentationAnimator(self.direction)
@@ -33,7 +33,7 @@ class SideMenuTransitionsManager: NSObject, UIViewControllerTransitioningDelegat
             return nil
         }
         return interactor.hasStarted ? interactor : nil
-
+        
     }
     
     /// should return the intercative dismissal animator object
@@ -47,8 +47,8 @@ class SideMenuTransitionsManager: NSObject, UIViewControllerTransitioningDelegat
 
 
 /**
-    AnimationDirection
-    - Enumerator to present the animation of left side or right side.
+ AnimationDirection
+ - Enumerator to present the animation of left side or right side.
  */
 enum AnimationDirection: Int {
     case left = 1
@@ -57,8 +57,8 @@ enum AnimationDirection: Int {
 }
 
 /**
-    Transition Enum
-    - Enumerator to present the interaction types like dismissing and presenting.
+ Transition Enum
+ - Enumerator to present the interaction types like dismissing and presenting.
  */
 enum Transition: Int {
     case presenting
@@ -67,8 +67,8 @@ enum Transition: Int {
 }
 
 /**
-    Interactor
-    - To handle user interactor with side menu while presenting or dismissing using the dragging.
+ Interactor
+ - To handle user interactor with side menu while presenting or dismissing using the dragging.
  */
 
 class Interactor: UIPercentDrivenInteractiveTransition {
@@ -83,12 +83,12 @@ class Interactor: UIPercentDrivenInteractiveTransition {
     
     /// hold the direction of interactive animation transition
     var direction: AnimationDirection = .left
-
+    
 }
 
 /**
-    SideMenuPresentationAnimator:
-        - Custom object to handle the dismiss custom animation of the side menu.
+ SideMenuPresentationAnimator:
+ - Custom object to handle the dismiss custom animation of the side menu.
  */
 
 fileprivate class SideMenuPresentationAnimator: NSObject, UIViewControllerAnimatedTransitioning {
@@ -98,7 +98,7 @@ fileprivate class SideMenuPresentationAnimator: NSObject, UIViewControllerAnimat
     init(_ direction: AnimationDirection) {
         self.direction = direction
     }
-
+    
     /// set the presentation animation duration
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         guard let fromViewController = transitionContext?.viewController(forKey: UITransitionContextViewControllerKey.from) as? SideMenuNavigationController else {
@@ -111,8 +111,8 @@ fileprivate class SideMenuPresentationAnimator: NSObject, UIViewControllerAnimat
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         
         guard let toViewController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to),
-        let fromViewController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.from) as? SideMenuNavigationController  else {
-            return
+            let fromViewController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.from) as? SideMenuNavigationController  else {
+                return
         }
         
         let containerView = transitionContext.containerView
@@ -123,25 +123,17 @@ fileprivate class SideMenuPresentationAnimator: NSObject, UIViewControllerAnimat
         containerView.addSubview(toViewController.view)
         
         let bounds = UIScreen.main.bounds
-        /// get snapshot to perform the animation, because the fromViewController get's removed from the screen and it causes a flicker, so we use a screenshot to perform the animation then add the fromViewController and remove the screenshot.
         
-        let snapshot = fromViewController.view.snapshotView(afterScreenUpdates: true)
-        snapshot?.frame = fromViewController.view.frame
-        if let snapshot = snapshot {
-            containerView.addSubview(snapshot)
-        }
+        containerView.addSubview(fromViewController.view)
         
         /// check if the view should have shadow...
         if fromViewController.contentViewHasShadow {
-            
             fromViewController.view.applyShadow(fromViewController.contentViewShadowColor, offset: fromViewController.contentViewShadowOffset, opacity: fromViewController.contentViewShadowOpacity, radius: CGFloat(fromViewController.contentViewShadowRadius))
-
-            snapshot?.applyShadow(fromViewController.contentViewShadowColor, offset: fromViewController.contentViewShadowOffset, opacity: fromViewController.contentViewShadowOpacity, radius: CGFloat(fromViewController.contentViewShadowRadius))
         }
-
+        
         toViewController.view.transform  = CGAffineTransform(scaleX: CGFloat(fromViewController.sideMenuViewControllerScale),
-                                                               y: CGFloat(fromViewController.sideMenuViewControllerScale))
-
+                                                             y: CGFloat(fromViewController.sideMenuViewControllerScale))
+        
         UIView.animate(withDuration: animationDuration,
                        delay: 0.0,
                        usingSpringWithDamping: CGFloat(fromViewController.presentationAnimationSpringWithDamping),
@@ -151,38 +143,35 @@ fileprivate class SideMenuPresentationAnimator: NSObject, UIViewControllerAnimat
                         toViewController.view.transform  = CGAffineTransform.identity
                         toViewController.view.alpha = 1
                         fromViewController.view.alpha = fromViewController.contentViewControllerOpacity
-                        snapshot?.alpha = fromViewController.view.alpha
                         /// scale to the required scale then translate the view...
                         fromViewController.view.transform  = CGAffineTransform(scaleX: fromViewController.contentViewControllerScale,
                                                                                y: fromViewController.contentViewControllerScale)
                             .translatedBy(x: bounds.size.width * fromViewController.xTranslation * CGFloat(self.direction.rawValue),
                                           y: bounds.size.height * fromViewController.yTranslation)
                         
-                        snapshot?.transform  = fromViewController.view.transform
                         toViewController.view.frame = bounds
-
+                        
         }) { (finished) in
             transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
-
+            
             if !transitionContext.transitionWasCancelled {
-                /// did presented
+                fromViewController.view.isUserInteractionEnabled = false
                 toViewController.view.addSubview(fromViewController.view)
-                snapshot?.removeFromSuperview()
             }
         }
-
+        
     }
-
+    
 }
 
 /**
-    SideMenuDismissalAnimator:
-        - Custom object to handle the dismiss custom animation of the side menu.
+ SideMenuDismissalAnimator:
+ - Custom object to handle the dismiss custom animation of the side menu.
  */
 
 fileprivate class SideMenuDismissalAnimator: NSObject, UIViewControllerAnimatedTransitioning {
-
-
+    
+    
     /// set the dismiss animation duration
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         guard let toViewController = transitionContext?.viewController(forKey: UITransitionContextViewControllerKey.to) as? SideMenuNavigationController else {
@@ -190,7 +179,7 @@ fileprivate class SideMenuDismissalAnimator: NSObject, UIViewControllerAnimatedT
         }
         return toViewController.dismissDuration
     }
-
+    
     /// handle the dismiss animation behaviour, by transforming the content view to it's original scale, and then translate it to the origin point.
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         guard let toViewController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to) as? SideMenuNavigationController,
@@ -201,7 +190,7 @@ fileprivate class SideMenuDismissalAnimator: NSObject, UIViewControllerAnimatedT
         let animationDuration = self .transitionDuration(using: transitionContext)
         
         containerView.addSubview(toViewController.view)
-
+        toViewController.view.isUserInteractionEnabled = true
         UIView.animate(withDuration: animationDuration,
                        delay: 0.0,
                        usingSpringWithDamping: CGFloat(toViewController.dismissAnimationSpringWithDamping),
@@ -209,21 +198,21 @@ fileprivate class SideMenuDismissalAnimator: NSObject, UIViewControllerAnimatedT
                        options: .curveEaseInOut,
                        animations: {
                         
-            /// container animation
-            toViewController.view.alpha = 1.0
-            toViewController.view.transform  = CGAffineTransform.identity.translatedBy(x:0, y: 0)
-            /// left side menu animation
-            fromViewController.view.transform  = CGAffineTransform(scaleX: CGFloat(toViewController.sideMenuViewControllerScale),
+                        /// container animation
+                        toViewController.view.alpha = 1.0
+                        toViewController.view.transform  = CGAffineTransform.identity.translatedBy(x:0, y: 0)
+                        /// left side menu animation
+                        fromViewController.view.transform  = CGAffineTransform(scaleX: CGFloat(toViewController.sideMenuViewControllerScale),
                                                                                y: CGFloat(toViewController.sideMenuViewControllerScale))
-
+                        
         }, completion: { (finished: Bool) -> Void in
-        
+            
             /// did dismisses
             fromViewController.view.transform  = CGAffineTransform.identity
             transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
-
+            
         })
-
+        
     }
-
+    
 }
