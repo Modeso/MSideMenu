@@ -155,11 +155,12 @@ fileprivate class SideMenuPresentationAnimator: NSObject, UIViewControllerAnimat
             transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
             
             if !transitionContext.transitionWasCancelled {
-                let transparentblocker = UIView(frame: fromViewController.view.frame)
-                transparentblocker.alpha = 0.0
+                let transparentblocker = UIView(frame: fromViewController.visibleViewController!.view.bounds)
+                transparentblocker.alpha = 1.0
                 transparentblocker.tag = 1
-                fromViewController.view.addSubview(transparentblocker)
                 toViewController.view.addSubview(fromViewController.view)
+                fromViewController.visibleViewController?.presentingViewController?.view.addSubview(transparentblocker)
+                
             }
         }
         
@@ -191,7 +192,7 @@ fileprivate class SideMenuDismissalAnimator: NSObject, UIViewControllerAnimatedT
         }
         let containerView = transitionContext.containerView
         let animationDuration = self .transitionDuration(using: transitionContext)
-        toViewController.view.subviews.filter({$0.tag == 1}).first?.removeFromSuperview()
+        toViewController.visibleViewController?.presentingViewController?.view.subviews.filter({$0.tag == 1}).first?.removeFromSuperview()
         containerView.addSubview(toViewController.view)
         UIView.animate(withDuration: animationDuration,
                        delay: 0.0,
