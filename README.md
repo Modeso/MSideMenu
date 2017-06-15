@@ -1,6 +1,6 @@
 # MSideMenu
 <p align="center">
-  <img src="https://media.licdn.com/mpr/mpr/shrink_200_200/AAEAAQAAAAAAAAZsAAAAJDM2NTU0MDA1LTA3YmEtNGUyMC05YmZjLTIxMDNlZWZlM2ZkMQ.png">
+  <img src="https://github.com/Modeso/MSideMenu/blob/master/drag.gif">
 </p>
 
 [![Build Status](https://img.shields.io/travis/rust-lang/rust.svg)](https://img.shields.io/travis/rust-lang/rust.svg)
@@ -29,11 +29,12 @@ MSideMenu is a Side Menu library written in Swift. It enables a flexible use for
 
 - `presentationDuration`: set the duration of the presentation animation of the side menu.
 - `dismissDuration`: set the duration of the dismissal animation of the side menu.
-- `contentViewControllerScale`: set the scale of the content view controller.
+- `sideMenuViewControllerScale`: set the scale of the side menu view controller.
 - `xTranslation`: set the translation in x direction for the content view controller. Default value is 0.0, and it will cause the content view controller to stay at center of the screen
 - `yTranslation`: set the translation in y direction for the content view controller. Default value is 0.0, and it will cause the content view controller to stay at center of the screen
 - `contentViewControllerOpacity`: set the alpha of the content view controller.
-- `shouldDismissOnTappingContentVC`: enable or disable the gsture recognizer that dismisses the side menu on clicking on the content view controller.
+- `shouldDismissOnTappingContentVC`: enable or disable the gesture recognizer that dismisses the side menu on clicking on the content view controller.
+- `interactivePresentationAndDismissal`: enable or disable the interactive gesture recognizer that presents and dismisses the side meny by dragging.
 - `contentViewHasShadow`: enable or disable the shadow of the content view controller.
 - `contentViewShadowColor`: set the color of the shadow of the content view controller.
 - `contentViewShadowOffset`: set the offset of the shadow of the content view controller.
@@ -114,7 +115,7 @@ If you prefer not to use either of the aforementioned dependency managers, you c
 
 ## Creation
 - Create Navigation controller in the storyboard and set the class to `SideMenuNavigationController`.
-- In this RootViewController of this navigation controller, use the `override func awakeFromNib` to set the `sideMenuViewController` property for the navigation controller.
+- In this RootViewController of this navigation controller, use the `override func awakeFromNib` to set the `leftSideMenuViewController` property for the navigation controller.
 
 ```swift
         guard let sideMenuNavController = self.navigationController as? SideMenuNavigationController else {
