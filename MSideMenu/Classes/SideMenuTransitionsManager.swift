@@ -155,7 +155,10 @@ fileprivate class SideMenuPresentationAnimator: NSObject, UIViewControllerAnimat
             transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
             
             if !transitionContext.transitionWasCancelled {
-                fromViewController.view.isUserInteractionEnabled = false
+                let transparentblocker = UIView(frame: fromViewController.view.frame)
+                transparentblocker.alpha = 0.0
+                transparentblocker.tag = 1
+                fromViewController.view.addSubview(transparentblocker)
                 toViewController.view.addSubview(fromViewController.view)
             }
         }
@@ -188,9 +191,8 @@ fileprivate class SideMenuDismissalAnimator: NSObject, UIViewControllerAnimatedT
         }
         let containerView = transitionContext.containerView
         let animationDuration = self .transitionDuration(using: transitionContext)
-        
+        toViewController.view.subviews.filter({$0.tag == 1}).first?.removeFromSuperview()
         containerView.addSubview(toViewController.view)
-        toViewController.view.isUserInteractionEnabled = true
         UIView.animate(withDuration: animationDuration,
                        delay: 0.0,
                        usingSpringWithDamping: CGFloat(toViewController.dismissAnimationSpringWithDamping),
