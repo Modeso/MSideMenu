@@ -136,8 +136,6 @@ fileprivate class SideMenuPresentationAnimator: NSObject, UIViewControllerAnimat
         
         UIView.animate(withDuration: animationDuration,
                        delay: 0.0,
-                       usingSpringWithDamping: CGFloat(fromViewController.presentationAnimationSpringWithDamping),
-                       initialSpringVelocity: CGFloat(fromViewController.presentationAnimationInitialSpringVelocity),
                        options: .allowUserInteraction,
                        animations: {
                         toViewController.view.transform  = CGAffineTransform.identity
